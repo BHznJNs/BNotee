@@ -1,0 +1,102 @@
+body {
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: .4rem;
+    border-radius: .4rem 0 0 .4rem;
+    font-weight: 500;
+    line-height: 1.2;
+    outline: none;
+    transition: .3s;
+    cursor: pointer;
+    white-space: pre-line;
+}
+
+.selected {
+    border: solid 3px #E0E0E0;
+    border-right: none;
+    padding: .2rem .4rem;
+}
+
+/* Focus */
+/* h1:focus, h2:focus,
+h3:focus, h4:focus,
+h5:focus, h6:focus,
+p:focus */
+.editing {
+    padding: .4rem .8rem;
+    color: #545454;
+    background-color: #F5F5F5;
+    cursor: text !important;
+}
+/* Focus End */
+
+h1 {
+    font-size: calc(1.375rem + 1.5vw);
+}
+h2 {
+    font-size: calc(1.325rem + .9vw);
+}
+h3 {
+    font-size: calc(1.3rem + .6vw);
+}
+h4 {
+    font-size: calc(1.275rem + .3vw);
+}
+h5 {
+    font-size: 1.25rem;
+}
+h6 {
+    font-size: 1.125rem;
+}
+@media (min-width: 1200px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+    h2 {
+        font-size: 2rem;
+    }
+    h3 {
+        font-size: 1.75rem;
+    }
+    h4 {
+        font-size: 1.5rem;
+    }
+}
+/* H End */
+
+p {
+    margin-top: 0;
+    margin-bottom: .6rem;
+    border-radius: .4rem 0 0 .4rem;
+    transition: .3s;
+    outline: none;
+    cursor: pointer;
+    white-space: pre-line;
+}
+p:last-child {
+    margin-bottom: 0;
+}
+
+/* List Start */
+ol,
+ul {
+  padding-left: 2rem;
+}
+
+ol,
+ul,
+dl {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+ol ol,
+ul ul,
+ol ul,
+ul ol {
+  margin-bottom: 0;
+}
+/* List End */
