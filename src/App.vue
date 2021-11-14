@@ -1,25 +1,16 @@
 <template>
-    <tool-bar type="default"/>
+    <tool-bar/>
     <note/>
-    <textfield-group id="main-textfield-group"/>
 </template>
 
 <script>
 import ToolBar from "./components/toolBar"
 import Note from "./components/note"
-import textfieldGroup from "./components/textfieldGroup"
 
 export default {
     name: 'App',
     components: {
-        Note, ToolBar,
-        textfieldGroup
-    },
-    created() {
-        // console.log(JSON.stringify(this.note))
-        // setInterval(() => {
-        //     console.log(this.note)
-        // }, 2000)
+        Note, ToolBar
     },
     data() {
         return {
@@ -43,12 +34,16 @@ export default {
                         ]
                     }]
                 ]
-            }
+            },
+            selectedEl: [],
+            isNodeInserting: [false]
         }
     },
     provide() {
         return {
             note: this.note,
+            selectedEl: this.selectedEl,
+            isNodeInserting: this.isNodeInserting
         }
     }
 }

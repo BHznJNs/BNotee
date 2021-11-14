@@ -1,5 +1,12 @@
 <template>
-    <div class="textfield-group" :class="{'disabled': !isAdding}" tabindex="999">
+    <div
+        class="textfield-group"
+        :class="{
+            'disabled': !isAdding,
+            'fixed': type == 'fixed',
+            'mdui-shadow-3': type == 'fixed'
+        }"
+        tabindex="999">
         <select class="selector">
             <option value="h">标题</option>
             <option value="p">段落</option>
@@ -18,11 +25,22 @@
 <script>
 export default {
     methods: {
+        // 关闭文本框，并将值返回给父元素
         closeNodeAdder(e) {
             let el = e.target
             let selector = el.parentNode.children[0]
+            let textfield = el.parentNode.children[1]
+            // 获取返回值
             let tagName = selector.value
-            this.$emit("toParent", tagName)
+            let content = textfield.innerText
+            if (tagName == "floor") {
+                content = {level: null, contents: []}
+            }
+
+            this.$emit("toParent", [tagName, content])
+
+            textfield.blur()
+            textfield.innerText = ""
         }
     },
     props: ["isAdding", "type"]
@@ -31,6 +49,7 @@ export default {
 <style scoped>
     .textfield-group {
         display: flex;
+        contain: content;
     }
     .textfield-group, .textfield-group * {
         outline: none;
@@ -39,6 +58,21 @@ export default {
     .textfield-group *:focus {
         border-color: #616161;
     }
+    
+    /* Fixed */
+    .fixed {
+        width: calc(100% - 6rem);
+        height: 54px;
+        transition: .6s
+    }
+    .fixed.disabled {
+        height: 0;
+    }
+    .fixed * {
+        margin-bottom: 0 !important;
+    }
+    /* Fixed End */
+
     /* Selector */
     .selector {
         color: #424242;
@@ -52,7 +86,7 @@ export default {
         appearance: none;
         transition: .3s;
     }
-    .disabled .selector {
+    .disabled:not(.fixed) .selector {
         height: 0;
         padding: 0;
         margin: 0;
@@ -73,14 +107,19 @@ export default {
         border-bottom: solid 2px #bdbdbd;
         transition: .3s;
     }
-    .disabled .textfield {
+    .disabled:not(.fixed) .textfield {
         height: 0;
         padding: 0;
         margin: 0;
         color: white;
         border-width: 0;
     }
+    .fixed .textfield {
+        overflow-y: auto;
+    }
+    /* Textfield End */
 
+    /* Textfield Closer Button */
     .textfield-closer {
         margin-bottom: 1rem;
         padding: 0;
@@ -91,7 +130,7 @@ export default {
         transition: .3s;
         user-select: none;
     }
-    .disabled .textfield-closer {
+    .disabled:not(.fixed) .textfield-closer {
         margin: 0;
         padding: 0;
         border-width: 0;
@@ -105,5 +144,5 @@ export default {
         height: 0;
         opacity: 0;
     }
-    /* Textfield End */
+    /* Textfield Closer Button End */
 </style>
