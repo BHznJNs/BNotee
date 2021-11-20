@@ -26,7 +26,7 @@ h3:focus, h4:focus,
 h5:focus, h6:focus,
 p:focus */
 .editing {
-    padding: .4rem .8rem;
+    padding: .2rem .6rem;
     color: #545454;
     background-color: #F5F5F5;
     cursor: text !important;

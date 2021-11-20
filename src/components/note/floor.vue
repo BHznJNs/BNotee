@@ -8,23 +8,24 @@
             :key="item.id"
         >
 
-            <note-node
-                v-if="item[0] == 'h'"
-                :tagName="item[0] + (children.level + 1)"
-                :content="item[1]"
-                :location="location.concat([index])"
-            />
+            
             <floor
-                v-else-if="item[0] == 'floor'"
+                v-if="item[0] == 'floor'"
                 :children="item[1]"
                 :location="location.concat([index])"
             />
+            <!--                           如果为标题节点                   | 其它节点 -->
             <note-node
                 v-else
-                :tagName="item[0]"
+                :tagName="item[0] == 'h' ? item[0] + (children.level + 1) : item[0]"
                 :content="item[1]"
                 :location="location.concat([index])"
             />
+            <!-- <button
+                class="adder-btn mdui-color-blue-grey-100 mdui-btn mdui-btn-raised"
+            >
+                <i class="material-icons">add</i>
+            </button> -->
 
         </template>
     </div>

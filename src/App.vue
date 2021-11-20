@@ -1,49 +1,55 @@
 <template>
-    <tool-bar/>
-    <note/>
+    <tool-bar
+        ref="toolBar"
+        @toParent="fromToolBar"
+    />
+    <note
+        :isInputting="isTextfieldInputting"
+    />
+    <textfield-group-fixed
+        :isInputting="isTextfieldInputting"
+        @toParent="closeTextfieldGroup"
+    />
 </template>
 
 <script>
 import ToolBar from "./components/toolBar"
 import Note from "./components/note"
+import TextfieldGroupFixed from "./components/textfieldGroupFixed"
+import defaultContent from "./assets/defaultContent"
 
 export default {
     name: 'App',
     components: {
-        Note, ToolBar
+        Note, ToolBar,
+        TextfieldGroupFixed
     },
     data() {
         return {
-            note: {
-                level: 0,
-                contents: [
-                    ["h", "这是一个大标题"],
-                    ["p", "这是一个段落"],
-                    ["floor", {
-                        level: 1,
-                        contents: [
-                            ["h", "这是层次中的大标题"],
-                            ["p", "这是一个段落"],
-                            ["floor", {
-                                level: 2,
-                                contents: [
-                                    ["h", "这是层次中的大标题"],
-                                    ["p", "这是一个段落"]
-                                ]
-                            }]
-                        ]
-                    }]
-                ]
-            },
+            note: defaultContent,
+            command: "",
             selectedEl: [],
-            isNodeInserting: [false]
+            isTextfieldInputting: false
         }
     },
     provide() {
         return {
             note: this.note,
             selectedEl: this.selectedEl,
-            isNodeInserting: this.isNodeInserting
+        }
+    },
+    methods: {
+        fromToolBar(value) {
+            this.command = value
+            this.isTextfieldInputting = true
+        },
+        closeTextfieldGroup(value) {
+            switch (this.command) {
+                case "insert-node":
+                    this.isTextfieldInputting = false
+                    this.$refs.toolBar.insertNode(value)
+                    break
+            }
         }
     }
 }

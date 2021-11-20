@@ -1,25 +1,20 @@
 <template>
-    <div class="note-outer mdui-shadow-3" :class="{'inserting': isNodeInserting[0]}">
+    <div class="note-outer mdui-shadow-3" :class="{'is-inputting': isInputting }">
         <div class="note" @contextmenu.prevent="">
             <template
                 v-for="(item, index) in note.contents"
                 :key="item.id"
             >
 
-                <note-node
-                    v-if="item[0] == 'h'"
-                    :tagName="item[0] + (note.level + 1)"
-                    :content="item[1]"
-                    :location="[index]"
-                />
                 <floor
-                    v-else-if="item[0] == 'floor'"
+                    v-if="item[0] == 'floor'"
                     :children="item[1]"
                     :location="[index]"
                 />
+                <!--                           如果为标题节点                   | 其它节点 -->
                 <note-node
                     v-else
-                    :tagName="item[0]"
+                    :tagName="item[0] == 'h' ? item[0] + (note.level + 1) : item[0]"
                     :content="item[1]"
                     :location="[index]"
                 />
@@ -27,13 +22,12 @@
             </template>
 
             <textfield-group
-                type="dafault"
                 :isAdding="isNodeAdding"
                 @toParent="closeNodeAdder"
             />
-            <!-- 新增元素 按键 -->
+            <!-- 新增节点 按键 -->
             <button
-                class="adder-btn mdui-color-blue-grey-100 mdui-btn mdui-btn-raised"
+                class="adder-btn mdui-btn mdui-btn-raised"
                 :class="{'disabled': isNodeAdding}"
                 @click="openNodeAdder"
             >
@@ -44,20 +38,21 @@
 </template>
 
 <script>
-import NoteNode from "./noteNode"
-import floor from "./floor"
-import textfieldGroup from "./textfieldGroup.vue"
+import NoteNode from "./note/noteNode"
+import Floor from "./note/floor"
+import TextfieldGroup from "./textfieldGroup.vue"
 
 export default {
     components: {
-        NoteNode, floor, textfieldGroup
+        NoteNode, Floor, TextfieldGroup
     },
     data() {
         return {
-            isNodeAdding: false,
+            isNodeAdding: false
         }
     },
-    inject: ["note", "isNodeInserting"],
+    props: ["isInputting"],
+    inject: ["note"],
     created() {
         // 设置按键事件监听
         addEventListener("keydown", (event) => {
@@ -87,7 +82,6 @@ export default {
                 this.note.contents.push(value)
             }
             this.isNodeAdding = false
-            console.log(this.note)
         }
     }
 }
@@ -107,7 +101,7 @@ export default {
         overflow: hidden;
         contain: content;
     }
-    .note-outer.inserting {
+    .note-outer.is-inputting {
         margin-bottom: 2rem
     }
     .note {
@@ -125,6 +119,8 @@ export default {
         width: 40%;
         margin: 0 auto 1rem;
         transition: opacity .3s;
+        color: rgba(0, 0, 0, 0.87);
+        background-color: #CFD8DC;
     }
     .adder-btn.disabled {
         opacity: 0;

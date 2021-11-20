@@ -2,14 +2,15 @@
     <div id="toolbar" class="mdui-shadow-3">
         <img id="logo" class="mdui-shadow-2" src="../assets/note.svg" draggable="false">
         <div class="tools">
+            <!-- 插入节点 -->
             <div
                 class="tool mdui-shadow-1"
                 :class="{'disabled': !selectedEl.length}"
-                @click="openInserter"
+                @click="this.$emit('toParent', 'insert-node')"
             >
                 <i class="material-icons">add</i>
             </div>
-
+            <!-- 删除节点 -->
             <div
                 class="tool mdui-shadow-1"
                 :class="{'disabled': !selectedEl.length}"
@@ -17,55 +18,60 @@
             >
                 <i class="material-icons">remove</i>
             </div>
+            <!-- 保存笔记 -->
+            <div
+                class="tool mdui-shadow-1"
+                @click="saveNote"
+            >
+                <i class="material-icons">vertical_align_bottom</i>
+            </div>
+            <!-- 导入笔记 -->
+            <div
+                class="tool mdui-shadow-1"
+                @click="readNote"
+            >
+                <i class="material-icons file">input
+                    <input id="file-uploader" type="file" accept="application/json">
+                </i>
+            </div>
         </div>
-
-        <textfield-group
-            type="fixed"
-            id="main-textfield-group"
-            :isAdding="isNodeInserting[0]"
-            @toParent="closeNodeInserter"
-        />
     </div>
 </template>
 
 <script>
-import textfieldGroup from "./textfieldGroup"
+import saveAs from "file-saver"
+import getNodeEl from "./mixin/getNodeEl"
 
 export default {
-    components: {textfieldGroup},
-    inject: ["note", "selectedEl", "isNodeInserting"],
+    inject: ["note", "selectedEl"],
+    mixins: [getNodeEl],
+    mounted() {
+        const fileUploader = document.querySelector("#file-uploader")
+        // 当选择文件
+        fileUploader.addEventListener("change", () => {
+            // 文件读取
+            let reader = new FileReader()
+            reader.readAsText(fileUploader.files[0], "uft8")
+            // 文件读取完成后，覆盖笔记
+            reader.onload = (e) => {
+                let result = e.target.result
+                this.note.contents = JSON.parse(result)
+            }
+        })
+    },
     methods: {
-        // 函数：获取 节点元素所在数组 并执行回调函数
-        getNodeEl({
-                nodeEl=this.note,
-                location,
-                num=0,
-                callback
-        }) {
-            if (num == location.length - 1) {
-                // 调用回调函数返回节点元素所在数组 及 index
-                if (callback) {
-                    callback(nodeEl.contents, location[num])
-                }
-            }
-            else {
-                let num_ = num + 1
-                this.getNodeEl({
-                    nodeEl: nodeEl.contents[location[num]][1],
-                    location: location,
-                    num: num_,
-                    callback: callback
-                })
-            }
-        },
-        closeNodeInserter(value) {
-            this.isNodeInserting[0] = false
+        // 函数：插入节点
+        insertNode(value) {
             // 如果无内容返回
             if (!value[1]) {
                 return
             }
 
             const location = this.selectedEl[0]
+            // 如果未选择节点
+            if (!location) {
+                return
+            }
             this.getNodeEl({
                 location: location,
                 callback: (nodeArray, index) => {
@@ -78,20 +84,29 @@ export default {
                 }
             })
         },
-        // 函数：插入元素
-        openInserter() {
-            this.isNodeInserting[0] = true
-        },
-        // 函数：删除被选择元素
+        // 函数：删除被选择节点
         deleteNode() {
             const location = this.selectedEl.pop()
             this.getNodeEl({
                 location: location,
                 callback: (nodeArray, index) => {
+                    // 删除节点
                     nodeArray.splice(index, 1)
                 }
             })
-            console.log(this.note)
+        },
+        // 函数：保存笔记
+        saveNote() {
+            let blob = new Blob(
+                [this.note.contents],
+                {type: "text/plain;charset=utf-8"}
+            )
+            saveAs(blob, "myNote.json")
+        },
+        // 函数：读取本地笔记
+        readNote() {
+            const fileUploader = document.querySelector("#file-uploader")
+            fileUploader.click()
         }
     }
 }
@@ -148,5 +163,9 @@ export default {
         text-align: center;
         line-height: 2rem;
         user-select: none;
+    }
+    /* File Uploader */
+    i.file input {
+        display: none;
     }
 </style>

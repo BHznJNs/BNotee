@@ -1,7 +1,7 @@
 <template>
     <div
-        class="textfield-group"
-        :class="{'disabled': !isAdding}"
+        class="textfield-group fixed mdui-shadow-3"
+        :class="{'disabled': !isInputting}"
         tabindex="999"
     >
         <select class="selector">
@@ -40,6 +40,6 @@ export default {
             textfield.innerText = ""
         }
     },
-    props: ["isAdding"]
+    props: ["isInputting"]
 }
 </script>
