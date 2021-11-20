@@ -98,7 +98,7 @@ export default {
         // 函数：保存笔记
         saveNote() {
             let blob = new Blob(
-                [this.note.contents],
+                [JSON.stringify(this.note.contents)],
                 {type: "text/plain;charset=utf-8"}
             )
             saveAs(blob, "myNote.json")
