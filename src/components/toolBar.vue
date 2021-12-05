@@ -5,7 +5,7 @@
             <!-- 插入节点 -->
             <div
                 class="tool shadow-1"
-                :class="{'disabled': !selectedNode.location}"
+                :class="{ 'disabled': !selectedNode.location }"
                 @click="openTextfield"
             >
                 <i class="material-icons">add</i>
@@ -13,10 +13,18 @@
             <!-- 删除节点 -->
             <div
                 class="tool shadow-1"
-                :class="{'disabled': !selectedNode.location}"
+                :class="{ 'disabled': !selectedNode.location }"
                 @click="deleteNode"
             >
                 <i class="material-icons">remove</i>
+            </div>
+            <!-- 节点颜色修改 -->
+            <div
+                class="tool shadow-1"
+                :class="{ 'disabled': !['basic-node', 'list-item'].includes(selectedNode.type) }"
+                @click="colorNode"
+            >
+                <i class="material-icons">color_lens</i>
             </div>
             <!-- 保存笔记 -->
             <div
@@ -66,7 +74,7 @@ export default {
         })
     },
     methods: {
-        // 函数：插入节点
+        // 方法：插入节点
         insertNode(obj) {
             // 如果无内容返回
             if (!obj.CT) {
@@ -90,7 +98,7 @@ export default {
                 }
             })
         },
-        // 函数：删除被选择节点
+        // 方法：删除被选择节点
         deleteNode() {
             const location = this.selectedNode.location
             this.selectedNode.location = null
@@ -103,7 +111,11 @@ export default {
                 }
             })
         },
-        // 函数：保存笔记
+        // 方法：节点染色
+        colorNode() {
+            EventBus.emit("colors-open")
+        },
+        // 方法：保存笔记
         saveNote() {
             let blob = new Blob(
                 [JSON.stringify(this.note.CTS)],
@@ -111,14 +123,14 @@ export default {
             )
             saveAs(blob, "myNote.json")
         },
-        // 函数：读取本地笔记
+        // 方法：读取本地笔记
         readNote() {
             const fileUploader = document.querySelector("#file-uploader")
             fileUploader.click()
         },
-        // 函数：打开全局输入框
+        // 方法：打开全局输入组
         openTextfield() {
-            EventBus.emit("open-textfield", "toolBar")
+            EventBus.emit("textfield-open", "toolBar")
         }
     }
 }

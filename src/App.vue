@@ -2,18 +2,21 @@
     <tool-bar/>
     <note/>
     <textfield-group-fixed/>
+    <colors/>
 </template>
 
 <script>
 import ToolBar from "./components/toolBar"
 import Note from "./components/note"
 import TextfieldGroupFixed from "./components/textfieldGroupFixed"
+import Colors from "./components/colors"
+
 import defaultContent from "./assets/defaultContent"
 
 export default {
     name: 'App',
     components: {
-        Note, ToolBar,
+        Note, ToolBar, Colors,
         TextfieldGroupFixed
     },
     data() {

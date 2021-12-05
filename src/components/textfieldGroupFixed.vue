@@ -30,13 +30,19 @@ export default {
         }
     },
     mounted() {
-        EventBus.on("open-textfield", (from) => {
+        EventBus.on("textfield-open", (from) => {
             this.commandFrom = from
             this.isInputting = true
         })
+        EventBus.on("textfield-close", this.close)
+        EventBus.on("colors-open", this.close)
     },
     methods: {
-        // 关闭文本框，并将值返回给父节点
+        close() {
+            this.isInputting = false
+            EventBus.emit("textfield-return")
+        },
+        // 方法：关闭文本框，并将值返回给父节点
         closeTextfield(e) {
             this.isInputting = false
             // 获取对应元素

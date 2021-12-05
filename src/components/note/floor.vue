@@ -75,6 +75,7 @@ export default {
     inject: ["note", "selectedNode"],
     mixins: [getNodeObj],
     methods: {
+        // 方法：选择此层次节点
         select(obj) {
             // 返回对象是否 checked
             const checked = obj.target.checked
@@ -99,8 +100,9 @@ export default {
                 this.selectedNode.type = null
             }
         },
+        // 方法：打开全局输入组
         openTextfield() {
-            EventBus.emit("open-textfield", "floor")
+            EventBus.emit("textfield-open", "floor")
             // 添加事件监听
             EventBus.on("textfield-return-floor", (obj) => {
                 // 向当前层次添加节点
@@ -109,6 +111,7 @@ export default {
                 EventBus.off("textfield-return-floor")
             })
         },
+        // 鼠标进入 悬停
         onMouseEnter() {
             // 鼠标悬停 .4s 后
             this.setTimeout = setTimeout(() => {
@@ -120,6 +123,7 @@ export default {
                 this.$emit("mouse-out")
             }
         },
+        // 鼠标离开
         onMouseLeave() {
             // 重置鼠标悬停时间
             clearTimeout(this.setTimeout)

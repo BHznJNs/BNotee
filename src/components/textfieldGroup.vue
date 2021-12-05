@@ -21,8 +21,9 @@
 
 <script>
 export default {
+    props: ["isAdding"],
     methods: {
-        // 关闭文本框，并将值返回给父节点
+        // 方法：关闭文本框，并将值返回给父节点
         closeNodeAdder(e) {
             let el = e.target
             let selector = el.parentNode.children[0]
@@ -45,7 +46,6 @@ export default {
             textfield.blur()
             textfield.innerText = ""
         }
-    },
-    props: ["isAdding"]
+    }
 }
 </script>

@@ -70,21 +70,20 @@ export default {
         })
     },
     mounted() {
-        EventBus.on("open-textfield", () => {
-            this.isInputting = true
-        })
+        EventBus.on("textfield-open", () => {this.isInputting = true})
+        EventBus.on("colors-open", () => {this.isInputting = true})
         EventBus.on("textfield-return", () => {
             this.isInputting = false
         })
     },
     methods: {
-        // 打开插入文本框
+        // 方法：打开插入文本框
         openNodeAdder() {
             const mainTextfield = document.querySelector(".note > .textfield-group > .textfield")
             this.isNodeAdding = true
             mainTextfield.focus()
         },
-        // 关闭插入文本框
+        // 方法：关闭插入文本框
         closeNodeAdder(obj) {
             if (obj.CT) {
                 // 如果插入节点为 层次
