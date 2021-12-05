@@ -1,33 +1,33 @@
 <template>
-    <div id="toolbar" class="mdui-shadow-3">
-        <img id="logo" class="mdui-shadow-2" src="../assets/note.svg" draggable="false">
+    <div id="toolbar" class="shadow-3">
+        <i class="logo material-icons shadow-2">format_list_bulleted</i> 
         <div class="tools">
             <!-- 插入节点 -->
             <div
-                class="tool mdui-shadow-1"
-                :class="{'disabled': !selectedEl.length}"
-                @click="this.$emit('toParent', 'insert-node')"
+                class="tool shadow-1"
+                :class="{'disabled': !selectedNode.location}"
+                @click="openTextfield"
             >
                 <i class="material-icons">add</i>
             </div>
             <!-- 删除节点 -->
             <div
-                class="tool mdui-shadow-1"
-                :class="{'disabled': !selectedEl.length}"
+                class="tool shadow-1"
+                :class="{'disabled': !selectedNode.location}"
                 @click="deleteNode"
             >
                 <i class="material-icons">remove</i>
             </div>
             <!-- 保存笔记 -->
             <div
-                class="tool mdui-shadow-1"
+                class="tool shadow-1"
                 @click="saveNote"
             >
                 <i class="material-icons">vertical_align_bottom</i>
             </div>
             <!-- 导入笔记 -->
             <div
-                class="tool mdui-shadow-1"
+                class="tool shadow-1"
                 @click="readNote"
             >
                 <i class="material-icons file">input
@@ -40,11 +40,12 @@
 
 <script>
 import saveAs from "file-saver"
-import getNodeEl from "./mixin/getNodeEl"
+import getNodeObj from "./mixin/getNodeObj"
+import EventBus from "../common/EventBus"
 
 export default {
-    inject: ["note", "selectedEl"],
-    mixins: [getNodeEl],
+    inject: ["note", "selectedNode"],
+    mixins: [getNodeObj],
     mounted() {
         const fileUploader = document.querySelector("#file-uploader")
         // 当选择文件
@@ -55,39 +56,46 @@ export default {
             // 文件读取完成后，覆盖笔记
             reader.onload = (e) => {
                 let result = e.target.result
-                this.note.contents = JSON.parse(result)
+                this.note.CTS = JSON.parse(result)
             }
+        })
+
+        // 当 textfield 返回插入节点对象
+        EventBus.on("textfield-return-toolBar", (value) => {
+            this.insertNode(value)
         })
     },
     methods: {
         // 函数：插入节点
-        insertNode(value) {
+        insertNode(obj) {
             // 如果无内容返回
-            if (!value[1]) {
+            if (!obj.CT) {
                 return
             }
 
-            const location = this.selectedEl[0]
+            const location = this.selectedNode.location
             // 如果未选择节点
             if (!location) {
                 return
             }
-            this.getNodeEl({
+            this.getNodeObj({
                 location: location,
                 callback: (nodeArray, index) => {
                     // 如果插入节点为 层次
-                    if (value[0] == "floor") {
-                        value[1].level = location.length
+                    if (obj.NT == "floor") {
+                        obj.level = location.length
                     }
 
-                    nodeArray.splice(index + 1, 0, value)
+                    nodeArray.splice(index + 1, 0, obj)
                 }
             })
         },
         // 函数：删除被选择节点
         deleteNode() {
-            const location = this.selectedEl.pop()
-            this.getNodeEl({
+            const location = this.selectedNode.location
+            this.selectedNode.location = null
+            this.selectedNode.type = null
+            this.getNodeObj({
                 location: location,
                 callback: (nodeArray, index) => {
                     // 删除节点
@@ -98,7 +106,7 @@ export default {
         // 函数：保存笔记
         saveNote() {
             let blob = new Blob(
-                [JSON.stringify(this.note.contents)],
+                [JSON.stringify(this.note.CTS)],
                 {type: "text/plain;charset=utf-8"}
             )
             saveAs(blob, "myNote.json")
@@ -107,6 +115,10 @@ export default {
         readNote() {
             const fileUploader = document.querySelector("#file-uploader")
             fileUploader.click()
+        },
+        // 函数：打开全局输入框
+        openTextfield() {
+            EventBus.emit("open-textfield", "toolBar")
         }
     }
 }
@@ -124,10 +136,15 @@ export default {
         user-select: none;
     }
 
-    #logo {
-        width: calc(100% - .8rem);
-        padding: .4rem;
+    i.logo {
+        display: block;
+        width: 100%;
+        padding: .2rem 0;
+        margin-bottom: .4rem;
+        color: white;
         background-color: #333;
+        font-size: 2rem;
+        text-align: center;
     }
 
     .tools {

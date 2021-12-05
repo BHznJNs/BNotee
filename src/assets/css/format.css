@@ -3,21 +3,24 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
+    min-width: 40em;
     margin-top: 0;
     margin-bottom: .4rem;
-    border-radius: .4rem 0 0 .4rem;
+    border-left: solid 0 #90A4AE;
     font-weight: 500;
     line-height: 1.2;
     outline: none;
-    transition: .3s;
     cursor: pointer;
     white-space: pre-line;
+    transition: .3s;
 }
 
 .selected {
-    border: solid 3px #E0E0E0;
-    border-right: none;
+    border-width: .4em;
     padding: .2rem .4rem;
+    border-radius: .2em 0 0 .2em;
+    -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
 /* Focus */
@@ -25,14 +28,16 @@ h1, h2, h3, h4, h5, h6 {
 h3:focus, h4:focus,
 h5:focus, h6:focus,
 p:focus */
-.editing {
+.editing  {
     padding: .2rem .6rem;
     color: #545454;
     background-color: #F5F5F5;
+    border-radius: .4rem 0 0 .4rem;
     cursor: text !important;
 }
 /* Focus End */
 
+/* Heading */
 h1 {
     font-size: calc(1.375rem + 1.5vw);
 }
@@ -65,16 +70,17 @@ h6 {
         font-size: 1.5rem;
     }
 }
-/* H End */
+/* Heading End */
 
 p {
+    min-width: 60em;
     margin-top: 0;
     margin-bottom: .6rem;
-    border-radius: .4rem 0 0 .4rem;
-    transition: .3s;
+    border-left: solid 0 #90A4AE;
     outline: none;
     cursor: pointer;
     white-space: pre-line;
+    transition: .3s;
 }
 p:last-child {
     margin-bottom: 0;

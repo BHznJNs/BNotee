@@ -9063,7 +9063,7 @@ th.mdui-table-cell-checkbox .mdui-checkbox {
  * =============================================================================
  */
 /* 默认为 Flat 扁平按钮 */
-.mdui-btn,
+/* .mdui-btn,
 .mdui-fab {
   position: relative;
   display: inline-block;
@@ -9102,7 +9102,7 @@ th.mdui-table-cell-checkbox .mdui-checkbox {
   will-change: box-shadow;
   zoom: 1;
   -webkit-user-drag: none;
-}
+} */
 .mdui-btn:hover,
 .mdui-fab:hover {
   background-color: rgba(0, 0, 0, 0.1);
@@ -9142,7 +9142,7 @@ input.mdui-btn[type="submit"] {
           appearance: none;
 }
 /* Raised button 浮动按钮 */
-.mdui-btn-raised {
+/* .mdui-btn-raised {
   -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
           box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
@@ -9153,7 +9153,7 @@ input.mdui-btn[type="submit"] {
 .mdui-btn-raised:active {
   -webkit-box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
           box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
-}
+} */
 /* 禁用按钮 */
 .mdui-btn[disabled],
 .mdui-fab[disabled],

@@ -1,7 +1,7 @@
 <template>
     <div
         class="textfield-group"
-        :class="{'disabled': !isAdding}"
+        :class="{ 'disabled': !isAdding }"
         tabindex="999"
     >
         <select class="selector">
@@ -34,7 +34,13 @@ export default {
                 content = {level: null, contents: []}
             }
 
-            this.$emit("toParent", [tagName, content])
+            // this.$emit("toParent", [tagName, content])
+            this.$emit("toParent", {
+                NT: tagName,
+                CT: content,
+                CL: null,
+                SL: false
+            })
 
             textfield.blur()
             textfield.innerText = ""

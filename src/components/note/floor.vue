@@ -1,46 +1,133 @@
 <template>
-    <div class="floor mdui-shadow-2">
+    <div
+        class="floor shadow-2"
+        :class="{ 'shadow-6': selected }"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
+    >
         <!-- 遮挡右侧阴影 -->
         <div class="mask"></div>
 
         <template
-            v-for="(item, index) in children.contents"
+            v-for="(item, index) in children"
             :key="item.id"
         >
-
-            
             <floor
-                v-if="item[0] == 'floor'"
-                :children="item[1]"
+                v-if="item.NT == 'floor'"
+                :children="item.CTS"
+                :selected="item.SL"
+                :level="level + 1"
                 :location="location.concat([index])"
+                @mouse-out="onMouseLeave"
             />
             <!--                           如果为标题节点                   | 其它节点 -->
-            <note-node
+            <basic-node
                 v-else
-                :tagName="item[0] == 'h' ? item[0] + (children.level + 1) : item[0]"
-                :content="item[1]"
+                :tagName="item.NT == 'h' ? item.NT + (level + 1) : item.NT"
+                :content="item.CT"
+                :selected="item.SL"
                 :location="location.concat([index])"
             />
-            <!-- <button
-                class="adder-btn mdui-color-blue-grey-100 mdui-btn mdui-btn-raised"
+        </template>
+
+        <!-- 控件 -->
+        <div
+            class="controls"
+            :class="{ disabled: !hover }"
+        >
+            <button
+                class="btn adder-btn"
+                @click="openTextfield"
             >
                 <i class="material-icons">add</i>
-            </button> -->
+            </button>
+            <label class="checkbox">
+                <input
+                    type="checkbox"
+                    :checked="selected"
+                    @change="select($event)"
+                />
+                    <i class="checkbox-icon"></i>
+            </label>
+        </div>
 
-        </template>
     </div>
 </template>
 
 <script>
-import NoteNode from "./noteNode"
+import basicNode from "./basicNode"
+import getNodeObj from "../mixin/getNodeObj"
+import EventBus from "../../common/EventBus"
 
 export default {
     name: "floor",
     components: {
-        NoteNode
+        basicNode
     },
-    props: ["children", "location"],
-    inject: ["note"]
+    data() {
+        return {
+            nodeObj: null,
+            hover: false,
+            setTimeout: null,
+        }
+    },
+    props: ["children", "level", "location", "selected"],
+    inject: ["note", "selectedNode"],
+    mixins: [getNodeObj],
+    methods: {
+        select(obj) {
+            // 返回对象是否 checked
+            const checked = obj.target.checked
+            this.nodeObj.SL = checked
+            // 若被选择
+            if (checked) {
+                // 如果已有节点被选择
+                if (this.selectedNode.location) {
+                    // 选取已被选择节点并取消选择
+                    this.getNodeObj({
+                        location: this.selectedNode.location,
+                        callback: (nodeArray, index) => {
+                            nodeArray[index].SL = false
+                        }
+                    })
+                }
+
+                this.selectedNode.location = this.location
+                this.selectedNode.type = "floor"
+            } else { // 若取消选择
+                this.selectedNode.location = null
+                this.selectedNode.type = null
+            }
+        },
+        openTextfield() {
+            EventBus.emit("open-textfield", "floor")
+            // 添加事件监听
+            EventBus.on("textfield-return-floor", (obj) => {
+                // 向当前层次添加节点
+                this.nodeObj.CTS.push(obj)
+                // 移除事件监听
+                EventBus.off("textfield-return-floor")
+            })
+        },
+        onMouseEnter() {
+            // 鼠标悬停 .4s 后
+            this.setTimeout = setTimeout(() => {
+                this.hover = true
+            }, 400)
+            // 如果是 floor 节点子元素
+            if (this.location.length > 1) {
+                // 让父亲 floor 节点退出 hover 状态
+                this.$emit("mouse-out")
+            }
+        },
+        onMouseLeave() {
+            // 重置鼠标悬停时间
+            clearTimeout(this.setTimeout)
+            if (!this.selected) {
+                this.hover = false
+            }
+        }
+    }
 }
 </script>
 
@@ -51,6 +138,7 @@ export default {
         margin-right: -1rem;
         padding: .4rem 0 .4rem .8rem;
         border-radius: 8px 0 0 8px;
+        transition: .3s;
     }
     .floor:not(:last-child) {
         margin-bottom: 1rem;
@@ -67,5 +155,31 @@ export default {
 
     #note > .floor {
         padding: .4rem 0 .8rem .8rem;
+    }
+
+    /* Adder Button */
+    .adder-btn {
+        width: 10%;
+        min-width: 60px;
+        height: 32px;
+        line-height: 32px;
+        margin: 0 2rem 0;
+        color: rgba(0, 0, 0, 0.87);
+        background-color: #CFD8DC;
+    }
+    /* Adder Button End */
+
+    /* Controls */
+    .controls {
+        display: flex;
+        height: 32px;
+        transition: height .3s;
+    }
+    .controls.disabled {
+        height: 0 !important;
+    }
+    .controls.disabled * {
+        opacity: 0;
+        pointer-events: none;
     }
 </style>

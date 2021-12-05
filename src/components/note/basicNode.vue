@@ -1,0 +1,70 @@
+<script>
+import { h } from "vue"
+import getNodeObj from "../mixin/getNodeObj"
+
+export default {
+    data() {
+        return {
+            nodeObj: null,
+            initialContent: this.content,
+            editing: false,
+        }
+    },
+    inject: ["note", "selectedNode"],
+    props: ["tagName", "content", "location", "selected"],
+    mixins: [getNodeObj],
+    methods: {
+        selectEvent() {
+            if (this.selected) {
+                // 如果节点已被选择，取消选择
+                this.selectedNode.location = null
+                this.selectedNode.type = null
+                this.nodeObj.SL = false
+            } else {
+                // 如果已有节点被选择
+                if (this.selectedNode.location) {
+                    // 选取已被选择节点并取消选择
+                    this.getNodeObj({
+                        location: this.selectedNode.location,
+                        callback: (nodeArray, index) => {
+                            nodeArray[index].SL = false
+                        }
+                    })
+                }
+
+                this.selectedNode.location = this.location
+                this.selectedNode.type = "basic-node"
+                this.nodeObj.SL = true
+            }
+        }
+    },
+    render() {
+        return h(this.tagName, {
+            contentEditable: true,
+            class: {
+                "selected": this.selected,
+                "editing": this.editing
+            },
+            onContextmenu: (e) => {
+                e.preventDefault()
+                this.selectEvent()
+            },
+            onClick: (e) => {
+                // 储存修改前节点内容
+                this.initialContent = e.target.innerText
+                this.editing = true
+            },
+            onBlur: (e) => {
+                let resultContent = e.target.innerText
+                // 若节点中文本发生改变
+                if (resultContent != this.initialContent) {
+                    // 修改 this.note 中对应对象数据
+                    this.nodeObj.CT = resultContent
+                }
+                this.editing = false
+            }
+            // 去除内容末尾 * 号
+        }, this.content)
+    }
+}
+</script>

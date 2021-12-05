@@ -1,15 +1,7 @@
 <template>
-    <tool-bar
-        ref="toolBar"
-        @toParent="fromToolBar"
-    />
-    <note
-        :isInputting="isTextfieldInputting"
-    />
-    <textfield-group-fixed
-        :isInputting="isTextfieldInputting"
-        @toParent="closeTextfieldGroup"
-    />
+    <tool-bar/>
+    <note/>
+    <textfield-group-fixed/>
 </template>
 
 <script>
@@ -27,29 +19,16 @@ export default {
     data() {
         return {
             note: defaultContent,
-            command: "",
-            selectedEl: [],
-            isTextfieldInputting: false
+            selectedNode: {
+                location: null,
+                type: null
+            },
         }
     },
     provide() {
         return {
             note: this.note,
-            selectedEl: this.selectedEl,
-        }
-    },
-    methods: {
-        fromToolBar(value) {
-            this.command = value
-            this.isTextfieldInputting = true
-        },
-        closeTextfieldGroup(value) {
-            switch (this.command) {
-                case "insert-node":
-                    this.isTextfieldInputting = false
-                    this.$refs.toolBar.insertNode(value)
-                    break
-            }
+            selectedNode: this.selectedNode
         }
     }
 }

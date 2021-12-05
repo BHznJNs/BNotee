@@ -1,21 +1,24 @@
 <template>
-    <div class="note-outer mdui-shadow-3" :class="{'is-inputting': isInputting }">
+    <div class="note-outer shadow-3" :class="{ 'is-inputting': isInputting }">
         <div class="note" @contextmenu.prevent="">
             <template
-                v-for="(item, index) in note.contents"
+                v-for="(item, index) in note.CTS"
                 :key="item.id"
             >
 
                 <floor
-                    v-if="item[0] == 'floor'"
-                    :children="item[1]"
+                    v-if="item.NT == 'floor'"
+                    :children="item.CTS"
+                    :selected="item.SL"
+                    :level="1"
                     :location="[index]"
                 />
                 <!--                           如果为标题节点                   | 其它节点 -->
-                <note-node
+                <basic-node
                     v-else
-                    :tagName="item[0] == 'h' ? item[0] + (note.level + 1) : item[0]"
-                    :content="item[1]"
+                    :tagName="item.NT == 'h' ? item.NT + 1 : item.NT"
+                    :content="item.CT"
+                    :selected="item.SL"
                     :location="[index]"
                 />
 
@@ -27,8 +30,8 @@
             />
             <!-- 新增节点 按键 -->
             <button
-                class="adder-btn mdui-btn mdui-btn-raised"
-                :class="{'disabled': isNodeAdding}"
+                class="btn adder-btn"
+                :class="{ 'disabled': isNodeAdding }"
                 @click="openNodeAdder"
             >
                 <i class="material-icons">add</i>
@@ -38,20 +41,21 @@
 </template>
 
 <script>
-import NoteNode from "./note/noteNode"
+import basicNode from "./note/basicNode"
 import Floor from "./note/floor"
 import TextfieldGroup from "./textfieldGroup.vue"
+import EventBus from "../common/EventBus"
 
 export default {
     components: {
-        NoteNode, Floor, TextfieldGroup
+        basicNode, Floor, TextfieldGroup
     },
     data() {
         return {
-            isNodeAdding: false
+            isNodeAdding: false,
+            isInputting: false
         }
     },
-    props: ["isInputting"],
     inject: ["note"],
     created() {
         // 设置按键事件监听
@@ -65,6 +69,14 @@ export default {
             }
         })
     },
+    mounted() {
+        EventBus.on("open-textfield", () => {
+            this.isInputting = true
+        })
+        EventBus.on("textfield-return", () => {
+            this.isInputting = false
+        })
+    },
     methods: {
         // 打开插入文本框
         openNodeAdder() {
@@ -73,13 +85,14 @@ export default {
             mainTextfield.focus()
         },
         // 关闭插入文本框
-        closeNodeAdder(value) {
-            if (value[1]) {
+        closeNodeAdder(obj) {
+            if (obj.CT) {
                 // 如果插入节点为 层次
-                if (value[0] == "floor") {
-                    value[1].level = 1
+                if (obj.NT == "floor") {
+                    obj.LV = 1
                 }
-                this.note.contents.push(value)
+                
+                this.note.contents.push(obj)
             }
             this.isNodeAdding = false
         }
@@ -117,8 +130,8 @@ export default {
     .adder-btn {
         display: block;
         width: 40%;
+        height: 36px;
         margin: 0 auto 1rem;
-        transition: opacity .3s;
         color: rgba(0, 0, 0, 0.87);
         background-color: #CFD8DC;
     }
