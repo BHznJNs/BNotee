@@ -25,7 +25,7 @@ export default {
             selectedNode: {
                 location: null,
                 type: null
-            },
+            }
         }
     },
     provide() {

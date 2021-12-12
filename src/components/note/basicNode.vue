@@ -12,15 +12,24 @@ export default {
         }
     },
     inject: ["note", "selectedNode"],
-    props: ["tagName", "content", "location", "selected"],
+    props: ["tagName", "content", "location", "selected", "color"],
     mixins: [getNodeObj],
+    computed: {
+        fontColor() {
+            if (!this.color || this.color.includes("--")) {
+                return `var(${this.color})`
+            } else {
+                return this.color
+            }
+        }
+    },
     methods: {
         // 方法：右键节点时，触发选择节点事件
         selectEvent() {
             if (this.selected) {
                 // 关闭全局输入组 及 改色器
                 EventBus.emit("textfield-close")
-                // EventBus.emit("colors-close")
+                EventBus.emit("colors-close")
                 // 如果节点已被选择，取消选择
                 this.selectedNode.location = null
                 this.selectedNode.type = null
@@ -49,6 +58,9 @@ export default {
             class: {
                 "selected": this.selected,
                 "editing": this.editing
+            },
+            style: {
+                "color": this.fontColor
             },
             onContextmenu: (e) => {
                 e.preventDefault()

@@ -1,5 +1,5 @@
 <template>
-    <div class="note-outer shadow-3" :class="{ 'is-inputting': isInputting }">
+    <div class="note-outer shadow-3" :class="{ 'offset': offset }">
         <div class="note" @contextmenu.prevent="">
             <template
                 v-for="(item, index) in note.CTS"
@@ -18,6 +18,7 @@
                     v-else
                     :tagName="item.NT == 'h' ? item.NT + 1 : item.NT"
                     :content="item.CT"
+                    :color="item.CL"
                     :selected="item.SL"
                     :location="[index]"
                 />
@@ -29,13 +30,13 @@
                 @toParent="closeNodeAdder"
             />
             <!-- 新增节点 按键 -->
-            <button
+            <div
                 class="btn adder-btn"
                 :class="{ 'disabled': isNodeAdding }"
                 @click="openNodeAdder"
             >
                 <i class="material-icons">add</i>
-            </button>
+            </div>
         </div>
     </div>
 </template>
@@ -53,7 +54,7 @@ export default {
     data() {
         return {
             isNodeAdding: false,
-            isInputting: false
+            offset: false
         }
     },
     inject: ["note"],
@@ -70,11 +71,9 @@ export default {
         })
     },
     mounted() {
-        EventBus.on("textfield-open", () => {this.isInputting = true})
-        EventBus.on("colors-open", () => {this.isInputting = true})
-        EventBus.on("textfield-return", () => {
-            this.isInputting = false
-        })
+        EventBus.on("note-offset", () => {this.offset = true})
+        EventBus.on("colors-close", () => {this.offset = false})
+        EventBus.on("textfield-return", () => {this.offset = false})
     },
     methods: {
         // 方法：打开插入文本框
@@ -85,25 +84,16 @@ export default {
         },
         // 方法：关闭插入文本框
         closeNodeAdder(obj) {
-            if (obj.CT) {
-                // 如果插入节点为 层次
-                if (obj.NT == "floor") {
-                    obj.LV = 1
-                }
-                
-                this.note.contents.push(obj)
-            }
             this.isNodeAdding = false
+            if (obj) {
+                this.note.CTS.push(obj)
+            }
         }
     }
 }
 </script>
 
 <style scoped>
-    * {
-        color: #333
-    }
-
     .note-outer {
         width: 100%;
         height: 80vh;
@@ -113,7 +103,7 @@ export default {
         overflow: hidden;
         contain: content;
     }
-    .note-outer.is-inputting {
+    .note-outer.offset {
         margin-bottom: 2rem
     }
     .note {
@@ -127,12 +117,16 @@ export default {
     /* ------ */
 
     .adder-btn {
+        position: sticky;
+        left: 30%;
         display: block;
         width: 40%;
+        max-width: 240px;
         height: 36px;
         margin: 0 auto 1rem;
         color: rgba(0, 0, 0, 0.87);
         background-color: #CFD8DC;
+        text-align: center;
     }
     .adder-btn.disabled {
         opacity: 0;

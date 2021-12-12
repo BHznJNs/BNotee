@@ -2,7 +2,6 @@
     <div
         class="textfield-group"
         :class="{ 'disabled': !isAdding }"
-        tabindex="999"
     >
         <select class="selector">
             <option value="h">标题</option>
@@ -10,12 +9,12 @@
             <option value="floor">层次</option>
         </select>
         <div class="textfield" contenteditable="true"></div>
-        <button
-            class="textfield-closer"
+        <div
+            class="textfield-closer closer"
             @click="closeNodeAdder($event)"
         >
             <i class="material-icons">close</i>
-        </button>
+        </div>
     </div>
 </template>
 
@@ -28,20 +27,25 @@ export default {
             let el = e.target
             let selector = el.parentNode.children[0]
             let textfield = el.parentNode.children[1]
-            // 获取返回值
+
             let tagName = selector.value
             let content = textfield.innerText
-            if (tagName == "floor") {
-                content = {level: null, contents: []}
+            // 定义返回对象
+            let returnObj = {
+                NT: tagName,
+                SL: false
+            }
+            if (["floor"].includes(tagName)) {
+                returnObj.CTS = []
+            } else if (!content) {
+                returnObj = null
+            } else {
+                returnObj.CL = null
+                returnObj.CT = content
             }
 
             // this.$emit("toParent", [tagName, content])
-            this.$emit("toParent", {
-                NT: tagName,
-                CT: content,
-                CL: null,
-                SL: false
-            })
+            this.$emit("toParent", returnObj)
 
             textfield.blur()
             textfield.innerText = ""

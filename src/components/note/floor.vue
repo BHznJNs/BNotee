@@ -25,6 +25,7 @@
                 v-else
                 :tagName="item.NT == 'h' ? item.NT + (level + 1) : item.NT"
                 :content="item.CT"
+                :color="item.CL"
                 :selected="item.SL"
                 :location="location.concat([index])"
             />
@@ -35,12 +36,12 @@
             class="controls"
             :class="{ disabled: !hover }"
         >
-            <button
+            <div
                 class="btn adder-btn"
                 @click="openTextfield"
             >
                 <i class="material-icons">add</i>
-            </button>
+            </div>
             <label class="checkbox">
                 <input
                     type="checkbox"
@@ -106,7 +107,9 @@ export default {
             // 添加事件监听
             EventBus.on("textfield-return-floor", (obj) => {
                 // 向当前层次添加节点
-                this.nodeObj.CTS.push(obj)
+                if (!obj) {
+                    this.nodeObj.CTS.push(obj)
+                }
                 // 移除事件监听
                 EventBus.off("textfield-return-floor")
             })
@@ -168,6 +171,7 @@ export default {
         height: 32px;
         line-height: 32px;
         margin: 0 2rem 0;
+        text-align: center;
         color: rgba(0, 0, 0, 0.87);
         background-color: #CFD8DC;
     }

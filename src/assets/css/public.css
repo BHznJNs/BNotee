@@ -1,0 +1,42 @@
+html {
+    --default-text-color: #333;
+    --highlight-color: #D50000;
+    --warning-color: #FFD600
+}
+
+body {
+    margin: 0;
+}
+/* Scrollbar */
+body *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background: transparent;
+}
+@media (min-width: 1024px) {
+    body *::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+}
+body *::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+}
+/* Scrollbar End */
+
+.note * {
+    color: var(--default-text-color)
+}
+/* Closer */
+.closer {
+    cursor: pointer;
+    transition: .3s;
+    user-select: none;
+}
+.closer i {
+    display: block;
+    width: 4rem;
+    text-align: center;
+    pointer-events: none;
+}
+/* Closer End */

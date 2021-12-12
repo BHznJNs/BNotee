@@ -4,7 +4,7 @@
         <div class="tools">
             <!-- 插入节点 -->
             <div
-                class="tool shadow-1"
+                class="tool btn-shallow"
                 :class="{ 'disabled': !selectedNode.location }"
                 @click="openTextfield"
             >
@@ -12,7 +12,7 @@
             </div>
             <!-- 删除节点 -->
             <div
-                class="tool shadow-1"
+                class="tool btn-shallow"
                 :class="{ 'disabled': !selectedNode.location }"
                 @click="deleteNode"
             >
@@ -20,22 +20,22 @@
             </div>
             <!-- 节点颜色修改 -->
             <div
-                class="tool shadow-1"
+                class="tool btn-shallow"
                 :class="{ 'disabled': !['basic-node', 'list-item'].includes(selectedNode.type) }"
-                @click="colorNode"
+                @click="colorsOpen"
             >
                 <i class="material-icons">color_lens</i>
             </div>
             <!-- 保存笔记 -->
             <div
-                class="tool shadow-1"
+                class="tool btn-shallow"
                 @click="saveNote"
             >
                 <i class="material-icons">vertical_align_bottom</i>
             </div>
             <!-- 导入笔记 -->
             <div
-                class="tool shadow-1"
+                class="tool btn-shallow"
                 @click="readNote"
             >
                 <i class="material-icons file">input
@@ -69,15 +69,15 @@ export default {
         })
 
         // 当 textfield 返回插入节点对象
-        EventBus.on("textfield-return-toolBar", (value) => {
-            this.insertNode(value)
+        EventBus.on("textfield-return-toolBar", (obj) => {
+            this.insertNode(obj)
         })
     },
     methods: {
         // 方法：插入节点
         insertNode(obj) {
             // 如果无内容返回
-            if (!obj.CT) {
+            if (!obj) {
                 return
             }
 
@@ -111,9 +111,10 @@ export default {
                 }
             })
         },
-        // 方法：节点染色
-        colorNode() {
+        // 方法：打开颜色选择器
+        colorsOpen() {
             EventBus.emit("colors-open")
+            EventBus.emit("note-offset")
         },
         // 方法：保存笔记
         saveNote() {
@@ -131,6 +132,7 @@ export default {
         // 方法：打开全局输入组
         openTextfield() {
             EventBus.emit("textfield-open", "toolBar")
+            EventBus.emit("note-offset")
         }
     }
 }
@@ -163,33 +165,16 @@ export default {
         display: flex;
         flex-direction: column;
     }
+
     .tool {
-        width: 2.6rem;
-        height: 2rem;
         margin: .6rem auto;
-        cursor: pointer;
-        color: #333;
-        background-color: #FAFAFA;
-        transition: .3s
     }
-    .tool:hover {
-        color: black;
-        background-color: #EEEEEE
-    }
-    .tool:active {
-        color: #424242;
-        background-color: white;
-    }
-    .tool.disabled {
-        color: #BDBDBD;
-        pointer-events: none;
-    }
+
     .tool i {
         display: block;
         width: 100%;
         height: 100%;
         font-size: 28px;
-        text-align: center;
         line-height: 2rem;
         user-select: none;
     }
