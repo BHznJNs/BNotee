@@ -1,9 +1,15 @@
 .textfield-group {
     display: flex;
     contain: content;
+    border-radius: 8px 0 0 0;
 }
 .textfield-group, .textfield-group * {
     outline: none;
+}
+.textfield-group > * {
+    color: #424242;
+    background-color: #F5F5F5;
+    transition: .3s;
 }
 .textfield-group *:hover,
 .textfield-group *:focus {
@@ -13,15 +19,7 @@
 
 /* Fixed */
 .textfield-group.fixed {
-    position: fixed;
-    bottom: 0;
-    right: 0;
     width: calc(100% - 6rem);
-    height: 54px;
-    transition: .6s
-}
-.textfield-group.fixed.disabled {
-    bottom: -54px;
 }
 .textfield-group.fixed * {
     margin-bottom: 0 !important;
@@ -34,12 +32,11 @@
     font-size: 16px;
     line-height: 20px;
     padding: 6px 8px;
-    margin-bottom: 1rem;
     border: 0;
-    border-radius: 8px 0 0 0;
+    -webkit-border-radius: 8px 0 0 0;
     border-bottom: solid 2px #bdbdbd;
     appearance: none;
-    transition: .3s;
+    cursor: pointer;
 }
 .disabled:not(.fixed) .selector {
     height: 0;
@@ -52,12 +49,9 @@
 /* Textfield */
 .textfield {
     width: 100%;
-    color: #424242;
     font-size: 16px;
     line-height: 20px;
     padding: 6px 4px;
-    margin-bottom: 1rem;
-    background-color: #F5F5F5;
     border-left: solid 2px #bdbdbd;
     border-bottom: solid 2px #bdbdbd;
     transition: .3s;
@@ -76,8 +70,6 @@
 
 /* Textfield Closer Button */
 .textfield-closer {
-    margin-bottom: 1rem;
-    background-color: #F5F5F5;
     border-bottom: solid 2px #bdbdbd;
     line-height: 32px;
 }

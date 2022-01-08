@@ -1,10 +1,10 @@
 <template>
-    <div id="toolbar" class="shadow-3">
+    <div class="toolbar shadow-3">
         <i class="logo material-icons shadow-2">format_list_bulleted</i> 
         <div class="tools">
             <!-- 插入节点 -->
             <div
-                class="tool btn-shallow"
+                class="tool btn btn-shallow"
                 :class="{ 'disabled': !selectedNode.location }"
                 @click="openTextfield"
             >
@@ -12,30 +12,49 @@
             </div>
             <!-- 删除节点 -->
             <div
-                class="tool btn-shallow"
-                :class="{ 'disabled': !selectedNode.location }"
+                class="tool btn btn-shallow"
+                :class="{ 'disabled': !selectedNode.location || selectedNode.tagName == 'td' }"
                 @click="deleteNode"
             >
                 <i class="material-icons">remove</i>
             </div>
+            <!-- 表格设置 -->
+            <div
+                class="tool btn btn-shallow"
+                :class="{ 'disabled': selectedNode.type != 'table' }"
+                @click="tableSetOpen"
+            >
+                <i class="material-icons">grid_on</i>
+            </div>
+            <table-setter
+                :show="tableSetter"
+                @tableSetterClose="() => {this.tableSetter = false}"
+            />
             <!-- 节点颜色修改 -->
             <div
-                class="tool btn-shallow"
+                class="tool btn btn-shallow"
                 :class="{ 'disabled': !['basic-node', 'list-item'].includes(selectedNode.type) }"
                 @click="colorsOpen"
             >
                 <i class="material-icons">color_lens</i>
             </div>
+            <!-- 清空节点 -->
+            <div
+                class="tool btn btn-shallow"
+                @click="clearNodes"
+            >
+                <i class="material-icons">clear_all</i>
+            </div>
             <!-- 保存笔记 -->
             <div
-                class="tool btn-shallow"
+                class="tool btn btn-shallow"
                 @click="saveNote"
             >
                 <i class="material-icons">vertical_align_bottom</i>
             </div>
             <!-- 导入笔记 -->
             <div
-                class="tool btn-shallow"
+                class="tool btn btn-shallow"
                 @click="readNote"
             >
                 <i class="material-icons file">input
@@ -47,11 +66,18 @@
 </template>
 
 <script>
-import saveAs from "file-saver"
+import TableSetter from "./tableSetter"
 import getNodeObj from "./mixin/getNodeObj"
 import EventBus from "../common/EventBus"
+import saveAs from "file-saver"
 
 export default {
+    data() {
+        return {
+            tableSetter: false
+        }
+    },
+    components: {TableSetter},
     inject: ["note", "selectedNode"],
     mixins: [getNodeObj],
     mounted() {
@@ -89,11 +115,6 @@ export default {
             this.getNodeObj({
                 location: location,
                 callback: (nodeArray, index) => {
-                    // 如果插入节点为 层次
-                    if (obj.NT == "floor") {
-                        obj.level = location.length
-                    }
-
                     nodeArray.splice(index + 1, 0, obj)
                 }
             })
@@ -103,6 +124,7 @@ export default {
             const location = this.selectedNode.location
             this.selectedNode.location = null
             this.selectedNode.type = null
+            this.selectedNode.tagName = null
             this.getNodeObj({
                 location: location,
                 callback: (nodeArray, index) => {
@@ -111,10 +133,18 @@ export default {
                 }
             })
         },
+        // 方法：切换表格设置器
+        tableSetOpen() {
+            this.tableSetter = true
+            EventBus.emit("note-offset")
+        },
         // 方法：打开颜色选择器
         colorsOpen() {
             EventBus.emit("colors-open")
-            EventBus.emit("note-offset")
+        },
+        // 方法：清空节点
+        clearNodes() {
+            this.note.CTS = []
         },
         // 方法：保存笔记
         saveNote() {
@@ -132,38 +162,42 @@ export default {
         // 方法：打开全局输入组
         openTextfield() {
             EventBus.emit("textfield-open", "toolBar")
-            EventBus.emit("note-offset")
         }
     }
 }
 </script>
 
 <style scoped>
-    #toolbar {
-        width: 4rem;
+    .toolbar {
+        display: inline-block;
+        width: 72px;
         height: 100vh;
         background-color: white;
-        overflow-x: hidden;
-    }
-
-    img, i {
-        user-select: none;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
     }
 
     i.logo {
         display: block;
         width: 100%;
-        padding: .2rem 0;
-        margin-bottom: .4rem;
+        padding: 8px 0;
+        margin-bottom: 8px;
         color: white;
         background-color: #333;
-        font-size: 2rem;
+        font-size: 48px;
         text-align: center;
     }
 
     .tools {
         display: flex;
         flex-direction: column;
+        height: calc(100% - 72px - 2rem);
+        padding-bottom: 1rem;
+        overflow: -moz-scrollbars-none;
+        overflow-y: auto;
+    }
+    .tools::-webkit-scrollbar {
+        width: 0 !important
     }
 
     .tool {
@@ -176,7 +210,6 @@ export default {
         height: 100%;
         font-size: 28px;
         line-height: 2rem;
-        user-select: none;
     }
     /* File Uploader */
     i.file input {

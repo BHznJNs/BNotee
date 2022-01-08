@@ -1,10 +1,12 @@
-/* 
+/*
     NT --> Node Type
     CT --> content
     CTS --> contents
     CL --> color
     LV --> level
     SL --> selected
+    OL --> isOrdered
+    CO --> column
 */
 export default {
     CTS: [
@@ -13,6 +15,10 @@ export default {
             NT: "h",
             CT: "这是一个大标题",
             CL: null,
+            SL: false
+        },
+        {
+            NT: "hr",
             SL: false
         },
         {
@@ -52,6 +58,83 @@ export default {
                             CT: "这是一个段落",
                             CL: null,
                             SL: false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            NT: "list",
+            OL: true,
+            SL: false,
+            CTS: [
+                {
+                    NT: "li",
+                    CT: "这是一个列表项",
+                    CL: null,
+                    SL: false
+                }
+            ]
+        },
+
+        {
+            NT: "table",
+            SL: false,
+            CO: 4,
+            CTS: [
+                {
+                    CTS: [
+                        {
+                            NT: "td",
+                            CT: "表格项",
+                            SL: false,
+                            CL: null
+                        },
+                        {
+                            NT: "td",
+                            CT: "表格项",
+                            SL: false,
+                            CL: null
+                        },
+                        {
+                            NT: "td",
+                            CT: "表格项",
+                            SL: false,
+                            CL: null
+                        },
+                        {
+                            NT: "td",
+                            CT: "表格项",
+                            SL: false,
+                            CL: null
+                        }
+                    ]
+                },
+                {
+                    CTS: [
+                        {
+                            NT: "td",
+                            CT: "表格项",
+                            SL: false,
+                            CL: null
+                        },
+                        {
+                            NT: "td",
+                            CT: "表格项",
+                            SL: false,
+                            CL: null
+                        },
+                        {
+                            NT: "td",
+                            CT: "表格项",
+                            SL: false,
+                            CL: null
+                        },
+                        {
+                            NT: "td",
+                            CT: "表格项",
+                            SL: false,
+                            CL: null
                         }
                     ]
                 }

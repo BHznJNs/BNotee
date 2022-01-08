@@ -16,6 +16,7 @@
     font-style: normal;
     text-transform: none;
     font-family: "Material Icons" !important;
+    user-select: none;
 
     /* Support for all WebKit browsers. */
     -webkit-font-smoothing: antialiased;

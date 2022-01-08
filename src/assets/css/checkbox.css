@@ -44,6 +44,7 @@
     background-color: transparent;
     border: none;
     border-radius: 50%;
+    -webkit-border-radius: 50%;
     -webkit-transition: -webkit-box-shadow 0.14s cubic-bezier(0.4, 0, 0.2, 1);
     transition: -webkit-box-shadow 0.14s cubic-bezier(0.4, 0, 0.2, 1);
     transition: box-shadow 0.14s cubic-bezier(0.4, 0, 0.2, 1);
@@ -60,6 +61,7 @@
     height: 18px;
     border: 2px solid rgba(0, 0, 0, 0.54);
     border-radius: 2px;
+    -webkit-border-radius: 2px;;
     -webkit-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     content: ' ';
@@ -87,6 +89,7 @@
 /* 各种状态的图标 */
 .checkbox input[type="checkbox"]:checked + .checkbox-icon::after {
     border-radius: 6px;
+    -webkit-border-radius: 6px;
     background-color: #546E7A;
     border-color: #546E7A;
 }

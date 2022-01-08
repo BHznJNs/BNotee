@@ -1,37 +1,42 @@
 <template>
-    <div class="note-outer shadow-3" :class="{ 'offset': offset }">
-        <div class="note" @contextmenu.prevent="">
+    <div
+        class="note-outer shadow-3"
+        :class="{
+            'offset': offset,
+            'fullscreen': isFullscreen
+        }"
+    >
+        <div class="note" ref="note" @contextmenu.prevent="">
             <template
                 v-for="(item, index) in note.CTS"
                 :key="item.id"
             >
-
-                <floor
+                <floor-block
                     v-if="item.NT == 'floor'"
+                    :selected="item.SL"
                     :children="item.CTS"
-                    :selected="item.SL"
-                    :level="1"
+                    :level="2"
                     :location="[index]"
                 />
-                <!--                           如果为标题节点                   | 其它节点 -->
-                <basic-node
+                <node-renderer
                     v-else
-                    :tagName="item.NT == 'h' ? item.NT + 1 : item.NT"
-                    :content="item.CT"
-                    :color="item.CL"
-                    :selected="item.SL"
-                    :location="[index]"
+                    :nodeObj="item"
+                    :index="index"
+                    :level="1"
+                    :location="[]"
                 />
-
             </template>
 
+            <div class="mask"></div>
+
             <textfield-group
+                ref="textfield"
                 :isAdding="isNodeAdding"
                 @toParent="closeNodeAdder"
             />
             <!-- 新增节点 按键 -->
             <div
-                class="btn adder-btn"
+                class="btn btn-normal adder-btn"
                 :class="{ 'disabled': isNodeAdding }"
                 @click="openNodeAdder"
             >
@@ -42,14 +47,15 @@
 </template>
 
 <script>
-import basicNode from "./note/basicNode"
-import Floor from "./note/floor"
-import TextfieldGroup from "./textfieldGroup.vue"
+import FloorBlock from "./note/floorBlock"
+import NodeRenderer from "./note/nodeRenderer"
+import TextfieldGroup from "./textfieldGroup"
 import EventBus from "../common/EventBus"
 
 export default {
     components: {
-        basicNode, Floor, TextfieldGroup
+        FloorBlock, NodeRenderer,
+        TextfieldGroup
     },
     data() {
         return {
@@ -57,36 +63,49 @@ export default {
             offset: false
         }
     },
+    props: ["isFullscreen"],
     inject: ["note"],
     created() {
         // 设置按键事件监听
-        addEventListener("keydown", (event) => {
-            const altKey = event.altKey
-            const keyName = event.key
+        addEventListener("keydown", (e) => {
+            const altKey = e.altKey
+            const keyName = e.key
             // 按下 alt + a 时触发
             if (altKey && keyName == "a") {
-                event.preventDefault()
+                e.preventDefault()
                 this.openNodeAdder()
             }
         })
     },
     mounted() {
         EventBus.on("note-offset", () => {this.offset = true})
+        EventBus.on("tableSetter-close", () => {this.offset = false})
         EventBus.on("colors-close", () => {this.offset = false})
         EventBus.on("textfield-return", () => {this.offset = false})
     },
     methods: {
         // 方法：打开插入文本框
         openNodeAdder() {
-            const mainTextfield = document.querySelector(".note > .textfield-group > .textfield")
             this.isNodeAdding = true
-            mainTextfield.focus()
+            this.$refs.textfield.focus()
         },
         // 方法：关闭插入文本框
         closeNodeAdder(obj) {
             this.isNodeAdding = false
+            console.log(obj)
             if (obj) {
                 this.note.CTS.push(obj)
+            }
+        }
+    },
+    watch: {
+        // 监听：当切换全屏状态时，隐藏 note
+        isFullscreen(newVal, oldVal) {
+            if (newVal != oldVal) {
+                this.$refs.note.style.display = "none"
+                setTimeout(() => {
+                    this.$refs.note.style.display = "block"
+                }, 1200)
             }
         }
     }
@@ -95,23 +114,57 @@ export default {
 
 <style scoped>
     .note-outer {
-        width: 100%;
-        height: 80vh;
-        margin-left: 2rem;
+        position: absolute;
+        right: 0;
+        display: inline-block;
+        width: calc(100vw - 108px);
+        height: 84vh;
+        margin-top: 56px;
         border-radius: 15px 0 0 15px;
-        transition: .3s;
+        -webkit-border-radius: 15px 0 0 15px;
+        background-color: white;
+        -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        transition: height .6s, width 1s, margin-top 1s,
+                    border-radius .3s 1s, -webkit-border-radius .3s 1s;
         overflow: hidden;
         contain: content;
     }
     .note-outer.offset {
-        margin-bottom: 2rem
+        height: 76vh;
     }
+    .note-outer.fullscreen {
+        width: 100vw;
+        height: 100vh;
+        margin-top: 0;
+        border-radius: 0;
+        -webkit-border-radius: 0;
+    }
+    @media screen and (max-height: 500px) {
+        .note-outer {
+            margin-top: 48px;
+        }
+        @media screen and (max-height: 450px) {
+            .note-outer {
+                height: 72vh;
+            }
+            .note-outer.offset {
+                height: 64vh;
+            }
+        }
+    }
+
     .note {
+        position: relative;
         height: 100%;
         padding: 1rem 0 1rem 1.2rem;
-        background-color: white;
-        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
         overflow: auto;
+        transition: padding-top .6s 1s;
+    }
+    .fullscreen .note {
+        padding-top: 64px;
     }
 
     /* ------ */
@@ -119,17 +172,22 @@ export default {
     .adder-btn {
         position: sticky;
         left: 30%;
-        display: block;
         width: 40%;
-        max-width: 240px;
+        max-width: 160px;
         height: 36px;
+        line-height: 36px;
         margin: 0 auto 1rem;
-        color: rgba(0, 0, 0, 0.87);
-        background-color: #CFD8DC;
-        text-align: center;
     }
     .adder-btn.disabled {
         opacity: 0;
+    }
+
+    .mask {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: .6rem;
+        background-image: linear-gradient(to top, rgba(255, 255, 255, 0), white);
         pointer-events: none;
     }
 </style>

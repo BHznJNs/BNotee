@@ -1,27 +1,34 @@
 .btn {
-    display: inline-block;
-    box-sizing: border-box;
-    padding: 0 16px;
-    font-size: 14px;
-    line-height: 36px;
-    border: none;
-    border-radius: 2px;
-    overflow: hidden;
-    outline: none;
+    display: block;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    -webkit-border-radius: 2px;
+            border-radius: 2px;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), -webkit-box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1);
+    color: #333 !important;
+    transition: 0.2s;
     user-select: none;
+    text-align: center;
     -ms-touch-action: manipulation;
         touch-action: manipulation;
+}
+.btn.disabled {
+    pointer-events: none;
+}
+
+
+.btn-normal {
+    background-color: #CFD8DC;
+    padding: 0 16px;
+    font-size: 14px;
     -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
         box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
-
-.btn:hover {
+.btn-normal:hover {
     -webkit-box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
             box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
 }
-.btn:active {
+.btn-normal:active {
     -webkit-box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
             box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
@@ -29,25 +36,18 @@
 .btn-shallow {
     width: 2.6rem;
     height: 2rem;
-    cursor: pointer;
-    color: #333;
     background-color: #FAFAFA;
-    border-radius: 2px;
-    text-align: center;
-    user-select: none;
     -webkit-box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12) !important;
             box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12) !important;
-    transition: .3s
 }
 .btn-shallow:hover {
-    color: black;
+    color: black !important;
     background-color: #EEEEEE
 }
 .btn-shallow:active {
-    color: #424242;
+    color: #424242 !important;
     background-color: white;
 }
-.btn-shallow.disabled {
-    color: #BDBDBD;
-    pointer-events: none;
+.btn.disabled {
+    color: #BDBDBD !important;
 }

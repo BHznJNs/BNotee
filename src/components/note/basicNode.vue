@@ -6,18 +6,22 @@ import EventBus from "../../common/EventBus"
 export default {
     data() {
         return {
-            nodeObj: null,
             initialContent: this.content,
             editing: false,
         }
     },
     inject: ["note", "selectedNode"],
-    props: ["tagName", "content", "location", "selected", "color"],
+    props: [
+        "tagName", "content",
+        "location", "selected",
+        "color"
+    ],
     mixins: [getNodeObj],
     computed: {
         fontColor() {
-            if (!this.color || this.color.includes("--")) {
-                return `var(${this.color})`
+            if (!this.color) {
+                // 默认文字颜色
+                return "#333"
             } else {
                 return this.color
             }
@@ -33,7 +37,9 @@ export default {
                 // 如果节点已被选择，取消选择
                 this.selectedNode.location = null
                 this.selectedNode.type = null
-                this.nodeObj.SL = false
+                this.selectedNode.tagName = null
+
+                this.getThisObj.SL = false
             } else {
                 // 如果已有节点被选择
                 if (this.selectedNode.location) {
@@ -48,16 +54,19 @@ export default {
 
                 this.selectedNode.location = this.location
                 this.selectedNode.type = "basic-node"
-                this.nodeObj.SL = true
+                this.selectedNode.tagName = this.tagName
+
+                this.getThisObj.SL = true
             }
         }
     },
     render() {
         return h(this.tagName, {
-            contentEditable: true,
+            contentEditable: this.tagName != 'hr',
             class: {
                 "selected": this.selected,
-                "editing": this.editing
+                "editing": this.editing,
+                "empty": !this.content
             },
             style: {
                 "color": this.fontColor
@@ -71,12 +80,15 @@ export default {
                 this.initialContent = e.target.innerText
                 this.editing = true
             },
+            onchange: () => {
+                console.log("changed")
+            },
             onBlur: (e) => {
-                let resultContent = e.target.innerText
+                const resultContent = e.target.innerText
                 // 若节点中文本发生改变
                 if (resultContent != this.initialContent) {
                     // 修改 this.note 中对应对象数据
-                    this.nodeObj.CT = resultContent
+                    this.getThisObj.CT = resultContent
                 }
                 this.editing = false
             }

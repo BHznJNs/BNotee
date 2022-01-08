@@ -1,13 +1,20 @@
 <script>
 export default {
-    mounted() {
-        if (this.location) {
+    computed: {
+        // 获取节点自身对象
+        getThisObj() {
+            if (!this.location) {
+                return
+            }
+
+            let obj
             this.getNodeObj({
                 location: this.location,
                 callback: (nodeArray, index) => {
-                    this.nodeObj = nodeArray[index]
+                    obj = nodeArray[index]
                 }
             })
+            return obj
         }
     },
     methods: {
