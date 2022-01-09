@@ -1,24 +1,18 @@
-# bnote
+# BNotee
 
-## Project setup
-```
-npm install
-```
+一个运行在浏览器上的笔记程序
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+* * *
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## 已实现
 
-### Lints and fixes files
-```
-npm run lint
-```
+- 标题
+- 段落
+- 分割线（程序内称为 `割线`）
+- 列表（序列 / 乱列）
+- 表格
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## TODO
+
+- [ ] Server 部分（Express）
+- [ ] 代码块（Python、JavaScript、C）
