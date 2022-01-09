@@ -80,7 +80,6 @@ export default {
         {
             NT: "table",
             SL: false,
-            CO: 4,
             CTS: [
                 {
                     CTS: [

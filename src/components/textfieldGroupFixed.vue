@@ -48,22 +48,28 @@ export default {
     mixins: [nodeObjReturner],
     mounted() {
         EventBus.on("textfield-open", (from) => {
+            EventBus.emit("colors-close")
+            EventBus.emit("tableSetter-close")
+
             this.commandFrom = from
             this.isInputting = true
             this.$refs.inputter.focus()
-            EventBus.emit("note-offset")
         })
-        EventBus.on("textfield-close", this.close)
-        EventBus.on("colors-open", this.close)
+        EventBus.on("textfield-close", () => {
+            this.commandFrom = null
+            this.isInputting = false
+        })
     },
     methods: {
-        close() {
-            this.isInputting = false
-            EventBus.emit("textfield-return")
-        },
+        // close() {
+        //     this.isInputting = false
+        //     EventBus.emit("textfield-return")
+        //     EventBus.emit("note-offset-cancel")
+        // },
         // 方法：关闭文本框，并将值返回给父节点
         closeTextfield() {
             this.isInputting = false
+            EventBus.emit("note-offset-cancel")
             // 获取对应数据
             const tagName = this.$refs.selector.value
             const content = this.$refs.inputter.innerText

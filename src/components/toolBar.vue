@@ -5,7 +5,7 @@
             <!-- 插入节点 -->
             <div
                 class="tool btn btn-shallow"
-                :class="{ 'disabled': !selectedNode.location }"
+                :class="{ 'disabled': !selectedNode.location || selectedNode.tagName == 'td' }"
                 @click="openTextfield"
             >
                 <i class="material-icons">add</i>
@@ -26,10 +26,6 @@
             >
                 <i class="material-icons">grid_on</i>
             </div>
-            <table-setter
-                :show="tableSetter"
-                @tableSetterClose="() => {this.tableSetter = false}"
-            />
             <!-- 节点颜色修改 -->
             <div
                 class="tool btn btn-shallow"
@@ -66,18 +62,11 @@
 </template>
 
 <script>
-import TableSetter from "./tableSetter"
 import getNodeObj from "./mixin/getNodeObj"
 import EventBus from "../common/EventBus"
 import saveAs from "file-saver"
 
 export default {
-    data() {
-        return {
-            tableSetter: false
-        }
-    },
-    components: {TableSetter},
     inject: ["note", "selectedNode"],
     mixins: [getNodeObj],
     mounted() {
@@ -100,6 +89,11 @@ export default {
         })
     },
     methods: {
+        // 方法：打开全局输入组
+        openTextfield() {
+            EventBus.emit("note-offset")
+            EventBus.emit("textfield-open", "toolBar")
+        },
         // 方法：插入节点
         insertNode(obj) {
             // 如果无内容返回
@@ -137,10 +131,14 @@ export default {
         tableSetOpen() {
             this.tableSetter = true
             EventBus.emit("note-offset")
+            EventBus.emit("tableSetter-open")
+            EventBus.emit("colors-close")
+            EventBus.emit("textfield-close")
         },
         // 方法：打开颜色选择器
         colorsOpen() {
             EventBus.emit("colors-open")
+            EventBus.emit("note-offset")
         },
         // 方法：清空节点
         clearNodes() {
@@ -158,10 +156,6 @@ export default {
         readNote() {
             const fileUploader = document.querySelector("#file-uploader")
             fileUploader.click()
-        },
-        // 方法：打开全局输入组
-        openTextfield() {
-            EventBus.emit("textfield-open", "toolBar")
         }
     }
 }

@@ -79,9 +79,7 @@ export default {
     },
     mounted() {
         EventBus.on("note-offset", () => {this.offset = true})
-        EventBus.on("tableSetter-close", () => {this.offset = false})
-        EventBus.on("colors-close", () => {this.offset = false})
-        EventBus.on("textfield-return", () => {this.offset = false})
+        EventBus.on("note-offset-cancel", () => {this.offset = false})
     },
     methods: {
         // 方法：打开插入文本框
@@ -161,7 +159,7 @@ export default {
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
         overflow: auto;
-        transition: padding-top .6s 1s;
+        transition: padding-top 0s;
     }
     .fullscreen .note {
         padding-top: 64px;

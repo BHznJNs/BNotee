@@ -62,34 +62,10 @@ export default {
         addNode() {
             if (this.parentType == "table") {
                 this.getThisObj.CTS.push({
-                    CTS: [
-                        {
-                            NT: "td",
-                            CT: "表格项",
-                            SL: false,
-                            CL: null
-                        },
-                        {
-                            NT: "td",
-                            CT: "表格项",
-                            SL: false,
-                            CL: null
-                        },
-                        {
-                            NT: "td",
-                            CT: "表格项",
-                            SL: false,
-                            CL: null
-                        },
-                        {
-                            NT: "td",
-                            CT: "表格项",
-                            SL: false,
-                            CL: null
-                        }
-                    ]
+                    CTS: [{NT: "td",CT: "表格项",SL: false,CL: null},{NT: "td",CT: "表格项",SL: false,CL: null},{NT: "td",CT: "表格项",SL: false,CL: null},{NT: "td",CT: "表格项",SL: false,CL: null}]
                 })
             } else {
+                EventBus.emit("note-offset")
                 EventBus.emit("textfield-open", this.parentType)
                 // 添加事件监听
                 EventBus.on("textfield-return-" + this.parentType, (obj) => {

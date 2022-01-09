@@ -14,6 +14,7 @@
     <note :isFullscreen="isFullscreen"/>
     <textfield-group-fixed/>
     <colors/>
+    <table-setter/>
 </template>
 
 <script>
@@ -22,12 +23,14 @@ import ControlBalls from "./components/controlBalls"
 import Note from "./components/note"
 import TextfieldGroupFixed from "./components/textfieldGroupFixed"
 import Colors from "./components/colors"
+import TableSetter from "./components/tableSetter"
 import defaultContent from "./assets/defaultContent"
 
 export default {
     name: 'App',
     components: {
-        Note, ControlBalls, ToolBar,
+        Note, ControlBalls,
+        ToolBar, TableSetter,
         Colors, TextfieldGroupFixed
     },
     data() {

@@ -203,7 +203,7 @@ hr.editing {
     padding: .4rem 0 .4rem .8rem;
     border-radius: 8px 0 0 8px;
     -webkit-border-radius: 8px 0 0 8px;
-    transition: .3s;
+    transition: height .6s, box-shadow .3s, --webkit-box-shadow .3s;
 }
 .floor {
     margin-bottom: .6rem;
@@ -230,10 +230,10 @@ hr.editing {
     position: relative;
     width: fit-content;
     min-width: 100%;
-    margin-bottom: .6rem;
+    margin-bottom: 1rem;
     -webkit-border-radius: 8px 0 0 8px;
             border-radius: 8px 0 0 8px;
-    transition: height .6s;
+    transition: height .6s, box-shadow .3s, --webkit-box-shadow .3s;
 }
 .table.hover {
     padding-bottom: .6rem;
@@ -252,7 +252,7 @@ table {
 td {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    width: 6em;
+    min-width: 8em;
     padding: 6px 12px;
     text-align: left;
     vertical-align: middle;

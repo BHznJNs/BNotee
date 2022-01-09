@@ -80,9 +80,6 @@ export default {
                 this.initialContent = e.target.innerText
                 this.editing = true
             },
-            onchange: () => {
-                console.log("changed")
-            },
             onBlur: (e) => {
                 const resultContent = e.target.innerText
                 // 若节点中文本发生改变

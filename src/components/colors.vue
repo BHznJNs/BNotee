@@ -46,7 +46,8 @@ export default {
     mixins: [getNodeObj],
     mounted() {
         EventBus.on("colors-open", () => {
-            EventBus.emit("note-offset")
+            EventBus.emit("textfield-closes")
+            EventBus.emit("tableSetter-close")
 
             this.disabled = false
             this.getNodeObj({
@@ -60,7 +61,7 @@ export default {
             this.disabled = true
             this.targetNode = null
         })
-        EventBus.on("textfield-open", () => {this.disabled = true})
+        // EventBus.on("textfield-open", () => {this.disabled = true})
     },
     methods: {
         setColor(color) {
@@ -68,6 +69,7 @@ export default {
         },
         close() {
             EventBus.emit("colors-close")
+            EventBus.emit("note-offset-cancel")
         }
     },
     watch: {
