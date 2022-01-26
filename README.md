@@ -16,6 +16,6 @@
 
 ## TODO
 
-- [ ] 触屏模式
+- [*] 触屏模式
 - [ ] Server 部分（Express）
 - [ ] 代码块（Python、JavaScript、C）
