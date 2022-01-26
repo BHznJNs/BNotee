@@ -4,6 +4,7 @@ import App from './App.vue'
 // import "./assets/mdui-v1.0.2/css/mdui.css"
 import "./assets/css/public.css"
 import "./assets/css/textfieldGroup.css"
+import "./assets/css/inputGroup.css"
 import "./assets/css/materialIcons.css"
 import "./assets/css/shadows.css"
 import "./assets/css/button.css"

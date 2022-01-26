@@ -84,25 +84,21 @@ export default {
                 {
                     CTS: [
                         {
-                            NT: "td",
                             CT: "表格项",
                             SL: false,
                             CL: null
                         },
                         {
-                            NT: "td",
                             CT: "表格项",
                             SL: false,
                             CL: null
                         },
                         {
-                            NT: "td",
                             CT: "表格项",
                             SL: false,
                             CL: null
                         },
                         {
-                            NT: "td",
                             CT: "表格项",
                             SL: false,
                             CL: null
@@ -112,25 +108,21 @@ export default {
                 {
                     CTS: [
                         {
-                            NT: "td",
                             CT: "表格项",
                             SL: false,
                             CL: null
                         },
                         {
-                            NT: "td",
                             CT: "表格项",
                             SL: false,
                             CL: null
                         },
                         {
-                            NT: "td",
                             CT: "表格项",
                             SL: false,
                             CL: null
                         },
                         {
-                            NT: "td",
                             CT: "表格项",
                             SL: false,
                             CL: null

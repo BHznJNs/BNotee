@@ -5,7 +5,8 @@
         :class="{ 
             'shadow-6': selected,
             'hover': hover && !selected,
-            'empty': !children.length
+            'empty': !children.length,
+            'touch-mode': isTouchMode
          }"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
@@ -20,6 +21,7 @@
             >
                 <list-block
                     v-if="item.NT == 'list'"
+                    :isTouchMode="isTouchMode"
                     :isOrdered="item.OL"
                     :selected="item.SL"
                     :children="item.CTS"
@@ -39,6 +41,7 @@
 
         <block-controls
             :disabled="!hover"
+            :isTouchMode="isTouchMode"
             :selected="selected"
             :location="location"
             :parentType="'list'"
@@ -67,13 +70,10 @@ export default {
         }
     },
     props: [
+        "isTouchMode",
         "children", "isOrdered",
         "location", "selected"
     ],
     mixins: [blockHoverEvent]
 }
 </script>
-
-<style scoped>
-    
-</style>

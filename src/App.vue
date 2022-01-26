@@ -3,15 +3,19 @@
         class="dark-filter"
         :class="{ 'darken': isDarkMode }"
     ></div>
-    <tool-bar/>
+    <tool-bar :isTouchMode="isTouchMode"/>
     <control-balls
         :isDarkMode="isDarkMode"
         :isTouchMode="isTouchMode"
         :isFullscreen="isFullscreen"
         @toggleDarkMode="toggleDarkMode"
+        @toggleTouchMode="toggleTouchMode"
         @toggleFullscreen="toggleFullscreen"
     />
-    <note :isFullscreen="isFullscreen"/>
+    <note
+        :isFullscreen="isFullscreen"
+        :isTouchMode="isTouchMode"
+    />
     <textfield-group-fixed/>
     <colors/>
     <table-setter/>
@@ -25,6 +29,7 @@ import TextfieldGroupFixed from "./components/textfieldGroupFixed"
 import Colors from "./components/colors"
 import TableSetter from "./components/tableSetter"
 import defaultContent from "./assets/defaultContent"
+
 
 export default {
     name: 'App',
@@ -55,6 +60,9 @@ export default {
     methods: {
         toggleDarkMode() {
             this.isDarkMode = !this.isDarkMode
+        },
+        toggleTouchMode() {
+            this.isTouchMode = !this.isTouchMode
         },
         toggleFullscreen() {
             this.isFullscreen = !this.isFullscreen

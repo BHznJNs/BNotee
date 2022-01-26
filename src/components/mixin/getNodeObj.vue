@@ -29,7 +29,7 @@ export default {
                 // 调用回调函数返回 节点所在数组 及 index
                 if (callback) {
                     callback(parentObj.CTS, location[num])
-                    //       nodeArray   index
+                    //       nodeArray      index
                     // 注：nodeArray[index] 相当于当前节点
                 }
             }

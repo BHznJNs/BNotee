@@ -1,11 +1,15 @@
 <template>
     <div
         class="controls"
-        :class="{ disabled }"
+        :class="{
+            'disabled': disabled && !isTouchMode,
+            'touch-mode': isTouchMode
+        }"
     >
         <div
             class="btn btn-normal adder-btn"
             @click="addNode"
+            ref="addNodeBtn"
         >
             <i class="material-icons">add</i>
         </div>
@@ -25,8 +29,12 @@
 import getNodeObj from "../mixin/getNodeObj"
 import EventBus from "../../common/EventBus"
 
+// 默认表格项
+const defaultTD = {NT: "td",CT: "",SL: false,CL: null}
+
 export default {
     props: [
+        "isTouchMode",
         "disabled", "selected",
         "location", "parentType"
     ],
@@ -40,6 +48,9 @@ export default {
 
             // 若被选择
             if (checked) {
+                EventBus.on("add-node", () => {
+                    this.$refs.addNodeBtn.click()
+                })
                 // 如果已有节点被选择
                 if (this.selectedNode.location) {
                     // 选取已被选择节点并取消选择
@@ -54,6 +65,7 @@ export default {
                 this.selectedNode.location = this.location
                 this.selectedNode.type = this.parentType
             } else { // 若取消选择
+                EventBus.off("add-node")
                 this.selectedNode.location = null
                 this.selectedNode.type = null
             }
@@ -61,9 +73,16 @@ export default {
         // 方法：打开全局输入组
         addNode() {
             if (this.parentType == "table") {
-                this.getThisObj.CTS.push({
-                    CTS: [{NT: "td",CT: "表格项",SL: false,CL: null},{NT: "td",CT: "表格项",SL: false,CL: null},{NT: "td",CT: "表格项",SL: false,CL: null},{NT: "td",CT: "表格项",SL: false,CL: null}]
-                })
+                // 获取当前表格列数
+                const colNum = this.getThisObj.CTS[0].CTS.length
+                console.log(colNum)
+                // 新行
+                let newRow = { CTS: [] }
+                for (let i = 0; i < colNum; i++) {
+                    newRow.CTS.push(defaultTD)
+                }
+                // 插入新行
+                this.getThisObj.CTS.push(newRow)
             } else {
                 EventBus.emit("note-offset")
                 EventBus.emit("textfield-open", this.parentType)
@@ -106,5 +125,15 @@ export default {
     .controls.disabled * {
         opacity: 0;
         pointer-events: none;
+    }
+
+    /* Touch Mode */
+    .touch-mode {
+        position: absolute;
+        top: 0;
+        left: -44px;
+    }
+    .touch-mode .adder-btn {
+        display: none;
     }
 </style>

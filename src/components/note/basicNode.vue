@@ -8,6 +8,7 @@ export default {
         return {
             initialContent: this.content,
             editing: false,
+            dbClick: false
         }
     },
     inject: ["note", "selectedNode"],
@@ -66,7 +67,6 @@ export default {
             class: {
                 "selected": this.selected,
                 "editing": this.editing,
-                "empty": !this.content
             },
             style: {
                 "color": this.fontColor
@@ -76,6 +76,14 @@ export default {
                 this.selectEvent()
             },
             onClick: (e) => {
+                // 双击选择
+                if (this.dbClick) {
+                    this.selectEvent()
+                }
+                this.dbClick = true
+                setTimeout(() => {
+                    this.dbClick = false
+                }, 300)
                 // 储存修改前节点内容
                 this.initialContent = e.target.innerText
                 this.editing = true

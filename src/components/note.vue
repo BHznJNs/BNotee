@@ -13,6 +13,7 @@
             >
                 <floor-block
                     v-if="item.NT == 'floor'"
+                    :isTouchMode="isTouchMode"
                     :selected="item.SL"
                     :children="item.CTS"
                     :level="2"
@@ -20,6 +21,7 @@
                 />
                 <node-renderer
                     v-else
+                    :isTouchMode="isTouchMode"
                     :nodeObj="item"
                     :index="index"
                     :level="1"
@@ -63,7 +65,7 @@ export default {
             offset: false
         }
     },
-    props: ["isFullscreen"],
+    props: ["isFullscreen", "isTouchMode"],
     inject: ["note"],
     created() {
         // 设置按键事件监听
@@ -183,6 +185,7 @@ export default {
     .mask {
         position: fixed;
         top: 0;
+        left: 0;
         width: 100%;
         height: .6rem;
         background-image: linear-gradient(to top, rgba(255, 255, 255, 0), white);

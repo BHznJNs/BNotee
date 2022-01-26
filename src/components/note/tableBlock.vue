@@ -2,7 +2,11 @@
 <template>
     <div
         class="table shadow-2"
-        :class="{ 'shadow-6': selected, hover }"
+        :class="{
+            'shadow-6': selected,
+            'touch-mode': isTouchMode,
+            'hover': hover && !isTouchMode
+        }"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
     >
@@ -11,16 +15,25 @@
 
         <table>
             <tbody>
-                <table-row
-                    v-for="(item, index) in children"
-                    :key="item.id"
-                    :children="item.CTS"
-                    :location="location.concat([index])"
-                />
+                <tr v-for="(item, index) in children" :key="item.id">
+                    <template
+                        v-for="(item_, index_) in item.CTS"
+                        :key="item_.id"
+                    >
+                    <!-- 单个表格项 -->
+                        <basic-node
+                            :tagName="'td'"
+                            :content="item_.CT"
+                            :color="item_.CL"
+                            :selected="item_.SL"
+                            :location="location.concat([index, index_])"
+                        />
+                    </template>
+                </tr>
             </tbody>
         </table>
         <block-controls
-            :class="{ 'controls-margin': hover }"
+            :isTouchMode="isTouchMode"
             :disabled="!hover"
             :selected="selected"
             :location="location"
@@ -32,42 +45,15 @@
 import BasicNode from "./basicNode"
 import BlockControls from "./blockControls"
 import blockHoverEvent from "../mixin/blockHoverEvent"
-import { h } from "vue"
 
 export default {
     props: [
-        "selected",
+        "isTouchMode", "selected",
         "children", "location"
     ],
     mixins: [blockHoverEvent],
     components: {
-        BlockControls,
-        tableRow: { // 表格行组件
-            components: {BasicNode},
-            props: ["children", "location"],
-            render() {
-                let childObjList = []
-                for (let index in this.children) {
-                    // 行组件子节点
-                    const child = this.children[index]
-                    childObjList.push(h(
-                        BasicNode, {
-                            tagName: "td",
-                            content: child.CT,
-                            color: child.CL,
-                            selected: child.SL,
-                            location: this.location.concat([index])
-                        }
-                    ))
-                }
-                return h("tr", childObjList)
-            }
-        }
+        BasicNode, BlockControls
     }
 }
 </script>
-<style scoped>
-    .controls-margin {
-        margin: .6rem 0 0;
-    }
-</style>

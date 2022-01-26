@@ -1,7 +1,10 @@
 <template>
     <div
         class="floor shadow-2"
-        :class="{ 'shadow-6': selected }"
+        :class="{
+            'shadow-6': selected,
+            'touch-mode': isTouchMode
+        }"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
     >
@@ -14,6 +17,7 @@
         >
             <floor-block
                 v-if="item.NT == 'floor'"
+                :isTouchMode="isTouchMode"
                 :children="item.CTS"
                 :selected="item.SL"
                 :level="level + 1"
@@ -22,6 +26,7 @@
             />
             <node-renderer
                 v-else
+                :isTouchMode="isTouchMode"
                 :nodeObj="item"
                 :index="index"
                 :level="level"
@@ -31,6 +36,7 @@
 
         <block-controls
             :disabled="!hover"
+            :isTouchMode="isTouchMode"
             :selected="selected"
             :location="location"
             :parentType="'floor'"
@@ -49,6 +55,7 @@ export default {
         BlockControls, NodeRenderer
     },
     props: [
+        "isTouchMode",
         "level", "location",
         "children", "selected"
     ],

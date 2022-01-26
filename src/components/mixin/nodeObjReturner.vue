@@ -45,7 +45,7 @@ export default {
                 case "table":
                     obj.CO = 4
                     obj.CTS = [{
-                        CTS: [{NT: "td",CT: "表格项",SL: false,CL: null},{NT: "td",CT: "表格项",SL: false,CL: null},{NT: "td",CT: "表格项",SL: false,CL: null},{NT: "td",CT: "表格项",SL: false,CL: null}]
+                        CTS: [{NT: "td",CT: "",SL: false,CL: null},{NT: "td",CT: "",SL: false,CL: null},{NT: "td",CT: "",SL: false,CL: null},{NT: "td",CT: "",SL: false,CL: null}]
                     }]
                 break
             }

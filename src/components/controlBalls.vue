@@ -5,18 +5,19 @@
             <i class="material-icons">apps</i>
         </div>
         <!-- 黑暗模式切换 -->
-        <div class="ball shadow-1" @click="toggleDarkMode"
-        >
+        <div class="ball btn" @click="toggleDarkMode">
             <i class="material-icons" v-show="!isDarkMode">brightness_2</i>
             <i class="material-icons" v-show="isDarkMode">wb_sunny</i>
         </div>
         <!-- 触屏模式切换 -->
-        <div class="ball shadow-1">
+        <div class="ball btn"
+            @click="toggleTouchMode"
+            :class="{ 'back': isTouchMode }"
+        >
             <i class="material-icons">touch_app</i>
         </div>
         <!-- 全屏切换 -->
-        <div class="ball shadow-1" @click="toggleFullscreen"
-        >
+        <div class="ball btn" @click="toggleFullscreen">
             <i class="material-icons" v-show="!isFullscreen">fullscreen</i>
             <i class="material-icons" v-show="isFullscreen">fullscreen_exit</i>
         </div>
@@ -28,6 +29,9 @@ export default {
     methods: {
         toggleDarkMode() {
             this.$emit("toggleDarkMode")
+        },
+        toggleTouchMode() {
+            this.$emit("toggleTouchMode")
         },
         toggleFullscreen() {
             this.$emit("toggleFullscreen")
@@ -47,8 +51,8 @@ export default {
     .controlballs.fullscreen {
         background-color: #f5f5f5;
         z-index: 999;
-        -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12) !important;
-            box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12) !important;
+        -webkit-box-shadow: var(--shadow-2);
+                box-shadow: var(--shadow-2);
     }
     
     .block {
@@ -74,6 +78,7 @@ export default {
         line-height: 56px;
     }
 
+    /* Balls */
     .ball {
         float: right;
         width: 48px;
@@ -82,13 +87,18 @@ export default {
         margin-left: 12px;
         border-radius: 50%;
         background-color: white;
-        cursor: pointer;
+        -webkit-box-shadow: var(--shadow-1);
+                box-shadow: var(--shadow-1);
         transition: background-color .2s, box-shadow .4s, -webkit-box-shadow .4s;
+    }
+    .ball.back {
+        color: white !important;
+        background-color: #333 !important;
     }
     .ball:hover {
         background-color: #fafafa;
-        -webkit-box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12) !important;
-            box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12) !important;
+        -webkit-box-shadow: var(--shadow-3);
+                box-shadow: var(--shadow-3);
     }
     .ball:active {
         background-color: #EEEEEE;

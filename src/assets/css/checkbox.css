@@ -9,6 +9,7 @@
     display: inline-block;
     height: 36px;
     line-height: 36px;
+    margin-left: 9px;
     cursor: pointer;
     -webkit-user-select: none;
        -moz-user-select: none;
@@ -109,6 +110,6 @@
   /* 阴影 */
 .checkbox:active input[type="checkbox"] + .checkbox-icon,
 .checkbox input[type="checkbox"]:focus + .checkbox-icon {
-    -webkit-box-shadow: 0 0 0 14px rgba(0, 0, 0, 0.1);
-            box-shadow: 0 0 0 14px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.1);
 }

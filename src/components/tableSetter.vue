@@ -41,7 +41,7 @@ import EventBus from "../common/EventBus"
 import getNodeObj from "./mixin/getNodeObj"
 
 // 默认表格项
-const defaultTD = {NT: "td",CT: "表格项",SL: false,CL: null}
+const defaultTD = {NT: "td",CT: "",SL: false,CL: null}
 
 export default {
     inject: ["note", "selectedNode"],

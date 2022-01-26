@@ -18,6 +18,24 @@
             >
                 <i class="material-icons">remove</i>
             </div>
+            <!-- 块节点内添加节点 -->
+            <div
+                class="tool btn btn-shallow"
+                :class="{ 'disabled': !['floor', 'list', 'table'].includes(selectedNode.type) }"
+                v-show="isTouchMode"
+                @click="blockNodeInsert"
+            >
+                <i class="material-icons">add_box</i>
+            </div>
+            <!-- 取消节点选择 -->
+            <div
+                class="tool btn btn-shallow"
+                :class="{ 'disabled': !selectedNode.location }"
+                v-show="isTouchMode"
+                @click="nodeCancelSelect"
+            >
+                <i class="material-icons">indeterminate_check_box</i>
+            </div>
             <!-- 表格设置 -->
             <div
                 class="tool btn btn-shallow"
@@ -67,6 +85,7 @@ import EventBus from "../common/EventBus"
 import saveAs from "file-saver"
 
 export default {
+    props: ["isTouchMode"],
     inject: ["note", "selectedNode"],
     mixins: [getNodeObj],
     mounted() {
@@ -126,6 +145,22 @@ export default {
                     nodeArray.splice(index, 1)
                 }
             })
+        },
+        // 方法：触屏模式下，块节点内添加节点
+        blockNodeInsert() {
+            EventBus.emit("add-node")
+        },
+        // 方法：触屏模式下，节点取消选择
+        nodeCancelSelect() {
+            this.getNodeObj({
+                location: this.selectedNode.location,
+                callback: (nodeArray, index) => {
+                    nodeArray[index].SL = false
+                }
+            })
+            this.selectedNode.tagName = null
+            this.selectedNode.location = null
+            this.selectedNode.type = null
         },
         // 方法：切换表格设置器
         tableSetOpen() {
