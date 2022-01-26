@@ -6,7 +6,7 @@
         <div class="input-group">
             <i class="hint material-icons">view_headline</i>
             <input
-                class="inputer" type="text"
+                class="inputter" type="text"
                 placeholder=" > 0 "
                 v-model="row"
             >
@@ -15,8 +15,8 @@
         <div class="input-group">
             <i class="hint material-icons">view_column</i>
             <input
-                class="inputer" type="text"
-                placeholder=" > 0 "
+                class="inputter" type="text"
+                placeholder=" > 0 " maxlength="3"
                 v-model="col"
             >
         </div>
@@ -160,6 +160,9 @@ export default {
     .input-group {
         margin-left: 8px;
         margin-right: 8px;
+    }
+    .inputter {
+        width: 3em !important;
     }
     .hint {
         font-size: 24px;

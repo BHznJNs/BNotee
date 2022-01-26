@@ -23,7 +23,7 @@
         -ms-user-select: none;
             user-select: none;
 }
-.input-group > .inputer {
+.input-group > .inputter {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     width: 8em;
@@ -32,7 +32,6 @@
     overflow: hidden;
     color: #333;
     font-size: 16px;
-    font-family: monospace;
     border: none;
     outline: none;
 }

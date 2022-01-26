@@ -10,7 +10,7 @@
         <div class="input-group">
             <div class="hint">#</div>
             <input
-                class="inputer" placeholder="******"
+                class="inputter" placeholder="******"
                 type="text" maxlength="8"
                 v-model="colorValue"
             >
@@ -45,6 +45,7 @@ export default {
     inject: ["selectedNode", "note"],
     mixins: [getNodeObj],
     mounted() {
+        // 当被唤起时
         EventBus.on("colors-open", () => {
             EventBus.emit("textfield-closes")
             EventBus.emit("tableSetter-close")
@@ -57,11 +58,11 @@ export default {
                 }
             })
         })
+        // 关闭时
         EventBus.on("colors-close", () => {
             this.disabled = true
             this.targetNode = null
         })
-        // EventBus.on("textfield-open", () => {this.disabled = true})
     },
     methods: {
         setColor(color) {
@@ -96,6 +97,10 @@ export default {
     }
     .color:hover {
         filter: contrast(.6);
+    }
+
+    .inputter {
+        width: 6em !important;
     }
     
     .closer {
