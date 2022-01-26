@@ -70,6 +70,7 @@ p:empty, li:empty {
 }
 
 .editing {
+    padding: 0 .2em;
     color: #545454;
     background-color: #F5F5F5;
     cursor: text !important;
