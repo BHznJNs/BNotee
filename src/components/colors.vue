@@ -42,7 +42,7 @@ export default {
             targetNode: null
         }
     },
-    inject: ["selectedNode", "note"],
+    inject: ["selectedNode"],
     mixins: [getNodeObj],
     mounted() {
         // 当被唤起时

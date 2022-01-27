@@ -11,7 +11,7 @@ export default {
             dbClick: false
         }
     },
-    inject: ["note", "selectedNode"],
+    inject: ["selectedNode"],
     props: [
         "tagName", "content",
         "location", "selected",

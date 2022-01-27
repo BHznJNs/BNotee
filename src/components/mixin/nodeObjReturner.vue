@@ -43,10 +43,10 @@ export default {
                     obj.OL = false
                     break
                 case "table":
-                    obj.CO = 4
-                    obj.CTS = [{
-                        CTS: [{NT: "td",CT: "",SL: false,CL: null},{NT: "td",CT: "",SL: false,CL: null},{NT: "td",CT: "",SL: false,CL: null},{NT: "td",CT: "",SL: false,CL: null}]
-                    }]
+                    obj.CTS = [
+                        ["", "", "", ""],
+                        ["", "", "", ""]
+                    ]
                 break
             }
 

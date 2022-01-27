@@ -65,7 +65,8 @@ export default {
         display: inline-block;
         width: 16px;
         height: 100%;
-        background-color: #FAFAFA;
+        margin-left: -1px;
+        background-color: #F5F5F5;
         border-radius: 0 50% 50% 0;
     }
     .block i {

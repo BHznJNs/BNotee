@@ -41,10 +41,10 @@ import EventBus from "../common/EventBus"
 import getNodeObj from "./mixin/getNodeObj"
 
 // 默认表格项
-const defaultTD = {NT: "td",CT: "",SL: false,CL: null}
+// const defaultTD = {NT: "td",CT: "",SL: false,CL: null}
 
 export default {
-    inject: ["note", "selectedNode"],
+    inject: ["selectedNode"],
     mixins: [getNodeObj],
     data() {
         return {
@@ -68,40 +68,40 @@ export default {
     },
     methods: {
         tableSet() {
-            //     目标节点行数、列数
+            //    目标节点行数、列数
             const initialRow = this.targetNode.CTS.length
-            const initialCol = this.targetNode.CTS[0].CTS.length
+            const initialCol = this.targetNode.CTS[0].length
             // 计算差值
-            const rowPoor = Math.abs(this.row - initialRow)
-            const colPoor = Math.abs(this.col - initialCol)
+            const rowDiff = Math.abs(this.row - initialRow)
+            const colDiff = Math.abs(this.col - initialCol)
             // 若列数增加
             if (this.col > initialCol) {
                 for (let row of this.targetNode.CTS) {
                     
-                    for (let i = 0; i < colPoor; i++) {
-                        row.CTS.push(defaultTD)
+                    for (let i = 0; i < colDiff; i++) {
+                        row.push("")
                     }
                 }
             } else { // 若列数减少
                 for (let row of this.targetNode.CTS) {
                     // 计算差值
-                    for (let i = 0; i < colPoor; i++) {
-                        row.CTS.pop()
+                    for (let i = 0; i < colDiff; i++) {
+                        row.pop()
                     }
                 }
             }
             // 若行数增加
             if (this.row > initialRow) {
                 // 单独表格行
-                const singleRow = {CTS:[]}
+                let singleRow = []
                 for (let i = 0; i < this.col; i++) {
-                    singleRow.CTS.push(defaultTD)
+                    singleRow.push("")
                 }
-                for (let i = 0; i < rowPoor; i++) {
+                for (let i = 0; i < rowDiff; i++) {
                     this.targetNode.CTS.push(singleRow)
                 }
             } else { // 若行数减少
-                for (let i = 0; i < rowPoor; i++) {
+                for (let i = 0; i < rowDiff; i++) {
                     this.targetNode.CTS.pop()
                 }
             }
@@ -123,7 +123,7 @@ export default {
                 })
                 // 获取目标行数、列数
                 this.row = this.targetNode.CTS.length
-                this.col = this.targetNode.CTS[0].CTS.length
+                this.col = this.targetNode.CTS[0].length
             } else {
                 this.targetNode = null
             }

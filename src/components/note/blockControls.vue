@@ -29,16 +29,13 @@
 import getNodeObj from "../mixin/getNodeObj"
 import EventBus from "../../common/EventBus"
 
-// 默认表格项
-const defaultTD = {NT: "td",CT: "",SL: false,CL: null}
-
 export default {
     props: [
         "isTouchMode",
         "disabled", "selected",
         "location", "parentType"
     ],
-    inject: ["note", "selectedNode"],
+    inject: ["selectedNode"],
     mixins: [getNodeObj],
     methods: {
         selectEvent() {
@@ -74,12 +71,11 @@ export default {
         addNode() {
             if (this.parentType == "table") {
                 // 获取当前表格列数
-                const colNum = this.getThisObj.CTS[0].CTS.length
-                console.log(colNum)
+                const colNum = this.getThisObj.CTS[0].length
                 // 新行
-                let newRow = { CTS: [] }
+                let newRow = []
                 for (let i = 0; i < colNum; i++) {
-                    newRow.CTS.push(defaultTD)
+                    newRow.push("")
                 }
                 // 插入新行
                 this.getThisObj.CTS.push(newRow)

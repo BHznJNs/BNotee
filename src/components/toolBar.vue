@@ -179,6 +179,8 @@ export default {
         clearNodes() {
             this.note.CTS = []
         },
+        // 方法：打开笔记上传
+        openUploader() {},
         // 方法：保存笔记
         saveNote() {
             let blob = new Blob(

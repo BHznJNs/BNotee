@@ -17,7 +17,9 @@
             <option value="li"
                 v-show="commandFrom == 'list' || selectedNode.tagName == 'li'"
             >列项</option>
-            <option value="table">表格</option>
+            <option value="table"
+                v-show="commandFrom != 'list' && selectedNode.tagName != 'li'"
+            >表格</option>
         </select>
         <div
             class="textfield"

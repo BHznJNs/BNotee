@@ -73,6 +73,12 @@ export default {
                     CT: "这是一个列表项",
                     CL: null,
                     SL: false
+                },
+                {
+                    NT: "li",
+                    CT: "这是一个列表项",
+                    CL: null,
+                    SL: false
                 }
             ]
         },
@@ -81,54 +87,8 @@ export default {
             NT: "table",
             SL: false,
             CTS: [
-                {
-                    CTS: [
-                        {
-                            CT: "表格项",
-                            SL: false,
-                            CL: null
-                        },
-                        {
-                            CT: "表格项",
-                            SL: false,
-                            CL: null
-                        },
-                        {
-                            CT: "表格项",
-                            SL: false,
-                            CL: null
-                        },
-                        {
-                            CT: "表格项",
-                            SL: false,
-                            CL: null
-                        }
-                    ]
-                },
-                {
-                    CTS: [
-                        {
-                            CT: "表格项",
-                            SL: false,
-                            CL: null
-                        },
-                        {
-                            CT: "表格项",
-                            SL: false,
-                            CL: null
-                        },
-                        {
-                            CT: "表格项",
-                            SL: false,
-                            CL: null
-                        },
-                        {
-                            CT: "表格项",
-                            SL: false,
-                            CL: null
-                        }
-                    ]
-                }
+                ["表格项","表格项","表格项","表格项"],
+                ["表格项","表格项","表格项","表格项"]
             ]
         }
 

@@ -1,5 +1,6 @@
 <script>
 export default {
+    inject: ["note"],
     computed: {
         // 获取节点自身对象
         getThisObj() {

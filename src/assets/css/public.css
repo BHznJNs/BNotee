@@ -47,7 +47,7 @@ body *::-webkit-scrollbar-thumb {
 /* Closer End */
 
 h1, h2, h3,
-h4, h5, h6,
+h4, h5,
 p, li {
     border-left: solid 0 #90A4AE;
     cursor: pointer;
@@ -56,10 +56,13 @@ p, li {
     transition: .3s;
 }
 h1:empty, h2:empty, h3:empty,
-h4:empty, h5:empty, h6:empty,
+h4:empty, h5:empty,
 p:empty, li:empty {
     padding-left: .2rem;
     border: solid 2px #EEEEEE !important;
+}
+li:empty {
+    height: 22px;
 }
 
 .selected {
@@ -71,7 +74,7 @@ p:empty, li:empty {
 
 .editing {
     padding: 0 .2em;
-    color: #545454;
+    color: black;
     background-color: #F5F5F5;
     cursor: text !important;
 }
@@ -103,8 +106,7 @@ p:empty, li:empty {
 
 /* Headings */
 h1, h2, h3,
-h4, h5, h6 {
-    min-width: 8em;
+h4, h5 {
     margin-top: 0;
     margin-bottom: .4rem;
     border-left: solid 0 #90A4AE;
@@ -131,9 +133,6 @@ h4 {
 h5 {
     font-size: 1.25rem;
 }
-h6 {
-    font-size: 1.125rem;
-}
 @media (min-width: 1200px) {
     h1 {
         font-size: 2.5rem;
@@ -152,7 +151,6 @@ h6 {
 
 /* Paras */
 p {
-    min-width: 20em;
     margin-top: 0;
     margin-bottom: .4rem;
     border-left: solid 0 #90A4AE;
@@ -204,13 +202,12 @@ li {
 /* List End */
 
 hr {
-    height: 2px;
-    margin: 0;
+    height: 3px;
+    margin-top: 0;
     margin-bottom: .4rem;
     padding: 0 !important;
     border: none;
-    background-color: var(--default-text-color) !important;
-    overflow: hidden;
+    background-color: #333 !important;
     transition: .2s;
 }
 hr.editing {
@@ -266,7 +263,7 @@ table {
 td {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    min-width: 8em;
+    min-width: 6em;
     padding: 6px 12px !important;
     text-align: left;
     vertical-align: middle;

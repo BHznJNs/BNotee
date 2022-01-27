@@ -15,21 +15,12 @@
 
         <table>
             <tbody>
-                <tr v-for="(item, index) in children" :key="item.id">
-                    <template
-                        v-for="(item_, index_) in item.CTS"
-                        :key="item_.id"
-                    >
-                    <!-- 单个表格项 -->
-                        <basic-node
-                            :tagName="'td'"
-                            :content="item_.CT"
-                            :color="item_.CL"
-                            :selected="item_.SL"
-                            :location="location.concat([index, index_])"
-                        />
-                    </template>
-                </tr>
+                <table-row
+                    v-for="(item, index) in children"
+                    :key="item.id"
+                    :children="item"
+                    :location="location.concat(index)"
+                />
             </tbody>
         </table>
         <block-controls
@@ -42,7 +33,7 @@
     </div>
 </template>
 <script>
-import BasicNode from "./basicNode"
+import TableRow from "./tableRow"
 import BlockControls from "./blockControls"
 import blockHoverEvent from "../mixin/blockHoverEvent"
 
@@ -53,7 +44,7 @@ export default {
     ],
     mixins: [blockHoverEvent],
     components: {
-        BasicNode, BlockControls
+        TableRow, BlockControls
     }
 }
 </script>
