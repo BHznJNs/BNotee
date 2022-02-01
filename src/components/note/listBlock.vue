@@ -4,7 +4,7 @@
         class="list"
         :class="{ 
             'shadow-6': selected,
-            'hover': hover && !selected,
+            'hover': hover || !selected,
             'empty': !children.length,
             'touch-mode': isTouchMode
          }"

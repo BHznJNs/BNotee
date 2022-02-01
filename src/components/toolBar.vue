@@ -115,11 +115,6 @@ export default {
         },
         // 方法：插入节点
         insertNode(obj) {
-            // 如果无内容返回
-            if (!obj) {
-                return
-            }
-
             const location = this.selectedNode.location
             // 如果未选择节点
             if (!location) {
@@ -158,6 +153,7 @@ export default {
                     nodeArray[index].SL = false
                 }
             })
+            EventBus.emit("remove-add-node")
             this.selectedNode.tagName = null
             this.selectedNode.location = null
             this.selectedNode.type = null

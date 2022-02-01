@@ -9,7 +9,6 @@
         <div
             class="btn btn-normal adder-btn"
             @click="addNode"
-            ref="addNodeBtn"
         >
             <i class="material-icons">add</i>
         </div>
@@ -20,7 +19,7 @@
                 :checked="selected"
                 @change="selectEvent"
             />
-                <i class="checkbox-icon"></i>
+            <i class="checkbox-icon"></i>
         </label>
     </div>
 </template>
@@ -46,8 +45,17 @@ export default {
             // 若被选择
             if (checked) {
                 EventBus.on("add-node", () => {
-                    this.$refs.addNodeBtn.click()
+                    const selectedNodeLoc = JSON.stringify(this.selectedNode.location)
+                    const thisNodeLoc = JSON.stringify(this.location)
+                    if (selectedNodeLoc == thisNodeLoc) {
+                        this.addNode()
+                    }
                 })
+                EventBus.on("remove-add-node", () => {
+                    EventBus.off("add-node")
+                    EventBus.off("remove-add-node")
+                })
+                
                 // 如果已有节点被选择
                 if (this.selectedNode.location) {
                     // 选取已被选择节点并取消选择
@@ -55,6 +63,7 @@ export default {
                         location: this.selectedNode.location,
                         callback: (nodeArray, index) => {
                             nodeArray[index].SL = false
+                            EventBus.emit()
                         }
                     })
                 }
@@ -62,7 +71,7 @@ export default {
                 this.selectedNode.location = this.location
                 this.selectedNode.type = this.parentType
             } else { // 若取消选择
-                EventBus.off("add-node")
+                EventBus.emit("remove-add-node")
                 this.selectedNode.location = null
                 this.selectedNode.type = null
             }

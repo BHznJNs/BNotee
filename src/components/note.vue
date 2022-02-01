@@ -6,6 +6,10 @@
             'fullscreen': isFullscreen
         }"
     >
+        <div class="mask-outer">
+            <div class="mask"></div>
+        </div>
+
         <div class="note" ref="note" @contextmenu.prevent="">
             <template
                 v-for="(item, index) in note.CTS"
@@ -28,8 +32,6 @@
                     :location="[]"
                 />
             </template>
-
-            <div class="mask"></div>
 
             <textfield-group
                 ref="textfield"
@@ -182,10 +184,14 @@ export default {
         opacity: 0;
     }
 
+    /* Mask */
+    .mask-outer {
+        position: relative;
+        width: 100%;
+        height: 0;
+        z-index: 1;
+    }
     .mask {
-        position: fixed;
-        top: 0;
-        left: 0;
         width: 100%;
         height: .6rem;
         background-image: linear-gradient(to top, rgba(255, 255, 255, 0), white);
