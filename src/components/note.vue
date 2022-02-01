@@ -6,10 +6,6 @@
             'fullscreen': isFullscreen
         }"
     >
-        <div class="mask-outer">
-            <div class="mask"></div>
-        </div>
-
         <div class="note" ref="note" @contextmenu.prevent="">
             <template
                 v-for="(item, index) in note.CTS"
