@@ -1,8 +1,8 @@
 <template>
     <div
-        class="floor shadow-2"
+        class="floor shadow-1"
         :class="{
-            'shadow-6': selected,
+            'shadow-3': selected,
             'touch-mode': isTouchMode
         }"
         @mouseenter="onMouseEnter"

@@ -1,6 +1,6 @@
 <template>
     <div
-        class="note-outer shadow-3"
+        class="note-outer shadow-4"
         :class="{
             'offset': offset,
             'fullscreen': isFullscreen

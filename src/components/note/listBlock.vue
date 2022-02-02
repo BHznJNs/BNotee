@@ -3,7 +3,7 @@
     <div
         class="list"
         :class="{ 
-            'shadow-6': selected,
+            'shadow-2': selected,
             'hover': hover || !selected,
             'empty': !children.length,
             'touch-mode': isTouchMode

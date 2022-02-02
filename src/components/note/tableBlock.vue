@@ -1,9 +1,9 @@
 <!-- 表格组件，不得包含其他组件 -->
 <template>
     <div
-        class="table shadow-2"
+        class="table shadow-1"
         :class="{
-            'shadow-6': selected,
+            'shadow-3': selected,
             'touch-mode': isTouchMode,
             'hover': hover && !isTouchMode
         }"

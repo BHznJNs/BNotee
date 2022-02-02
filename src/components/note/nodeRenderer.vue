@@ -22,7 +22,6 @@
         :children="nodeObj.CTS"
         :location="location.concat([index])"
     />
-    <!--                           如果为标题节点                   | 其它节点 -->
     <basic-node
         v-else
         :tagName="nodeObj.NT"
