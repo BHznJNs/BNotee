@@ -1,21 +1,38 @@
 # BNotee
 
-一个运行在浏览器上的笔记程序 [Git_Page](https://bhznjns.github.io/BNotee/dist/)
+一个运行在浏览器上的笔记程序 [GitHubPages](https://bhznjns.github.io/BNotee/dist/)
 
 * * *
 
-## 已实现
+## 行内样式对照 Inline Styles
 
-- 标题
-- 段落
-- 分割线（程序内称为 `割线`）
-- 列表（序列 / 乱列）
-- 表格
-- 黑暗模式
-- 全屏（阅读模式）
+| 符号 Marks | 样式 Styles |
+|  ----  |  ---- |
+| ##Bold## | **##Bold##** |
+| \``Code\`` | <code>\``Code\``</code> |
+| \__Underlined\__ | <u>\__Underlined\__</u>
+| //Italic// | <i>//Italic//</i> |
+| --Deleted-- | <del>--Deleted--</del> |
+| ::Weaken:: | <span>Weaken</span> |
+
+
+* * *
+
+## 已实现 Finished
+
+- 标题(Headings (1 ~ 4))
+- 段落(Paragraph)
+- 分割线(Horizonal Rule)
+- 列表块(Ordered List && Unordered List)
+- 表格块(Table)
+- 详情块(Details)
+- 黑暗模式(Dark Mode)
+- 触屏模式(Touch Mode)
+- 全屏(阅读模式 Read Mode)
+- 行内样式(Inline Style)
+- 导入 / 导出(Import / Export)
 
 ## TODO
 
-- [*] 触屏模式
-- [ ] Server 部分（Express）
-- [ ] 代码块（Python、JavaScript、C）
+- [ ] 代码块(Code Block for: [Python, JavaScript, C])
+- [ ] .md 导出(Markdown exports)
