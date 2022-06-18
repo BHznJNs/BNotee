@@ -1,7 +1,17 @@
 .textfield-group {
+    position: sticky;
+    left: 0;
     display: flex;
+    max-height: 54px;
     contain: content;
     border-radius: 8px 0 0 0;
+    transition: max-height .3s;
+}
+#note-textfield-group {
+    margin-bottom: 20px;
+}
+.textfield-group.disabled {
+    max-height: 0;
 }
 .textfield-group, .textfield-group * {
     outline: none;
@@ -19,7 +29,9 @@
 
 /* Fixed */
 .textfield-group.fixed {
-    width: calc(100% - 6rem);
+    left: initial;
+    width: calc(100vw - 108px);
+    max-width: 480px;
 }
 .textfield-group.fixed * {
     margin-bottom: 0 !important;
@@ -34,34 +46,25 @@
     padding: 6px 8px;
     border: 0;
     -webkit-border-radius: 8px 0 0 0;
+            border-radius: 8px 0 0 0;
+    border-right: solid 2px #bdbdbd;
     border-bottom: solid 2px #bdbdbd;
     appearance: none;
     cursor: pointer;
-}
-.disabled:not(.fixed) .selector {
-    height: 0;
-    padding: 0;
-    margin: 0;
-    border-width: 0;
 }
 /* Selector End */
 
 /* Textfield */
 .textfield {
     width: 100%;
-    font-size: 16px;
     line-height: 20px;
     padding: 6px 4px;
-    border-left: solid 2px #bdbdbd;
     border-bottom: solid 2px #bdbdbd;
+    cursor: pointer;
     transition: .3s;
 }
-.disabled:not(.fixed) .textfield {
-    height: 0;
-    padding: 0;
-    margin: 0;
-    color: white;
-    border-width: 0;
+.textfield:focus {
+    cursor: text;
 }
 .fixed .textfield {
     overflow-y: auto;
@@ -76,14 +79,14 @@
 .fixed .textfield-closer {
     line-height: 54px;
 }
-.disabled:not(.fixed) .textfield-closer {
-    margin: 0;
-    padding: 0;
-    border-width: 0;
-}
-
-.disabled:not(.fixed) .textfield-closer i {
-    height: 0;
-    opacity: 0;
-}
 /* Textfield Closer Button End */
+
+/* In Uploader */
+.note-list > .textfield-group > .selector {
+    display: none;
+}
+.note-list > .textfield-group {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}

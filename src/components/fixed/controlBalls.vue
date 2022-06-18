@@ -4,37 +4,55 @@
             <div class="mask"></div>
             <i class="material-icons">apps</i>
         </div>
+        <!-- 打开笔记概要 -->
+        <div
+            class="ball btn" 
+            @click="openAnchors"
+        >
+            <i class="material-icons">subtitles</i>
+        </div>
         <!-- 黑暗模式切换 -->
-        <div class="ball btn" @click="toggleDarkMode">
+        <div
+            class="ball btn" 
+            @click="$emit('toggle-darkMode')"
+        >
             <i class="material-icons" v-show="!isDarkMode">brightness_2</i>
             <i class="material-icons" v-show="isDarkMode">wb_sunny</i>
         </div>
         <!-- 触屏模式切换 -->
         <div class="ball btn"
-            @click="toggleTouchMode"
-            :class="{ 'back': isTouchMode }"
+            @click="$emit('toggle-touchMode')"
+            :class="{ 'black': isTouchMode }"
         >
             <i class="material-icons">touch_app</i>
         </div>
         <!-- 全屏切换 -->
-        <div class="ball btn" @click="toggleFullscreen">
+        <div
+            class="ball btn"
+            @click="$emit('toggle-fullscreen')"
+        >
             <i class="material-icons" v-show="!isFullscreen">fullscreen</i>
             <i class="material-icons" v-show="isFullscreen">fullscreen_exit</i>
         </div>
     </div>
 </template>
 <script>
+import EventBus from "../../common/EventBus"
+
 export default {
-    props: ["isDarkMode", "isTouchMode", "isFullscreen"],
+    props: [
+        "isDarkMode",
+        "isTouchMode",
+        "isFullscreen"
+    ],
+    emits: [
+        "toggle-darkMode",
+        "toggle-touchMode",
+        "toggle-fullscreen"
+    ],
     methods: {
-        toggleDarkMode() {
-            this.$emit("toggleDarkMode")
-        },
-        toggleTouchMode() {
-            this.$emit("toggleTouchMode")
-        },
-        toggleFullscreen() {
-            this.$emit("toggleFullscreen")
+        openAnchors() {
+            EventBus.emit("open-anchors")
         }
     }
 }
@@ -51,8 +69,8 @@ export default {
     .controlballs.fullscreen {
         background-color: #f5f5f5;
         z-index: 999;
-        -webkit-box-shadow: var(--shadow-2);
-                box-shadow: var(--shadow-2);
+        -webkit-box-shadow: var(--shadow-1);
+                box-shadow: var(--shadow-1);
     }
     
     .block {
@@ -90,9 +108,10 @@ export default {
         background-color: white;
         -webkit-box-shadow: var(--shadow-1);
                 box-shadow: var(--shadow-1);
-        transition: background-color .2s, box-shadow .4s, -webkit-box-shadow .4s;
+        transition: background-color .2s,
+                    box-shadow .4s, -webkit-box-shadow .4s;
     }
-    .ball.back {
+    .ball.black {
         color: white !important;
         background-color: #333 !important;
     }

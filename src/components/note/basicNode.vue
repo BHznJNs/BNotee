@@ -1,91 +1,86 @@
 <script>
 import { h } from "vue"
 import getNodeObj from "../mixin/getNodeObj"
+import compiler from "../../common/compiler"
 import EventBus from "../../common/EventBus"
 
 export default {
     data() {
         return {
-            initialContent: this.content,
+            selected: false,
+            initialContent: "",
             editing: false,
-            dbClick: false
+            dbTouch: false,
         }
     },
     inject: ["selectedNode"],
+    mixins: [getNodeObj],
     props: [
         "tagName", "content",
-        "location", "selected",
-        "color"
+        "location", "color",
     ],
-    mixins: [getNodeObj],
-    computed: {
-        fontColor() {
-            if (!this.color) {
-                // 默认文字颜色
-                return "#333"
-            } else {
-                return this.color
-            }
+    watch: {
+        content(newVal) {
+            this.$nextTick(() => {
+                const HTMLOutput = compiler.outputer(newVal)
+                this.$el.innerHTML = HTMLOutput
+            })
         }
     },
     methods: {
         // 方法：右键节点时，触发选择节点事件
         selectEvent() {
             if (this.selected) {
-                // 关闭全局输入组 及 改色器
-                EventBus.emit("textfield-close")
-                EventBus.emit("colors-close")
+                // 关闭全局组件
+                EventBus.emit("fixedComponents-close")
                 // 如果节点已被选择，取消选择
-                this.selectedNode.location = null
+                this.selectedNode.loc = null
+                this.selectedNode.vnode = null
                 this.selectedNode.type = null
-                this.selectedNode.tagName = null
-
-                this.getThisObj.SL = false
+                this.selected = false
             } else {
                 // 如果已有节点被选择
-                if (this.selectedNode.location) {
+                if (this.selectedNode.loc) {
                     // 选取已被选择节点并取消选择
-                    this.getNodeObj({
-                        location: this.selectedNode.location,
-                        callback: (nodeArray, index) => {
-                            nodeArray[index].SL = false
-                        }
-                    })
+                    this.selectedNode.vnode.selected = false
                 }
-
-                this.selectedNode.location = this.location
-                this.selectedNode.type = "basic-node"
-                this.selectedNode.tagName = this.tagName
-
-                this.getThisObj.SL = true
+                this.selectedNode.loc = this.location
+                this.selectedNode.vnode = this
+                this.selectedNode.type = this.tagName
+                this.selected = true
             }
         }
     },
     render() {
         return h(this.tagName, {
-            contentEditable: this.tagName != 'hr',
+            contentEditable: true,
             class: {
                 "selected": this.selected,
                 "editing": this.editing,
+                "inline-style": true
             },
             style: {
-                "color": this.fontColor
+                "color": this.color
             },
             onContextmenu: (e) => {
                 e.preventDefault()
                 this.selectEvent()
             },
-            onClick: (e) => {
+            onTouchstart: () => {
                 // 双击选择
-                if (this.dbClick) {
+                if (this.dbTouch) {
                     this.selectEvent()
                 }
-                this.dbClick = true
+                this.dbTouch = true
                 setTimeout(() => {
-                    this.dbClick = false
+                    this.dbTouch = false
                 }, 300)
+            },
+            onClick: (e) => {
                 // 储存修改前节点内容
-                this.initialContent = e.target.innerText
+                if (!this.editing) {
+                    this.initialContent = e.target.innerText
+                }
                 this.editing = true
             },
             onBlur: (e) => {
@@ -94,10 +89,16 @@ export default {
                 if (resultContent != this.initialContent) {
                     // 修改 this.note 中对应对象数据
                     this.getThisObj.CT = resultContent
+                    EventBus.emit("add-history", {
+                        loc: this.location,
+                        prop: "CT",
+                        before: this.initialContent,
+                        after: resultContent
+                    })
+                    this.initialContent = resultContent
                 }
                 this.editing = false
             }
-            // 去除内容末尾 * 号
         }, this.content)
     }
 }

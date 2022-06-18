@@ -11,6 +11,7 @@
             <option value="ol">序列</option>
             <option value="ul">乱列</option>
             <option value="table">表格</option>
+            <option value="details">详情</option>
         </select>
         <div
             class="textfield"
@@ -27,11 +28,11 @@
 </template>
 
 <script>
-import nodeObjReturner from "./mixin/nodeObjReturner"
+import nodeObjReturner from "../common/nodeObjReturner"
 
 export default {
     props: ["isAdding"],
-    mixins: [nodeObjReturner],
+    inject: ["note"],
     methods: {
         focus() {
             const textfield = this.$refs.inputter
@@ -45,10 +46,10 @@ export default {
             const tagName = selector.value
             const content = textfield.innerText
             // 返回对象
-            const returnObj = this.returnObj(tagName, content)
+            const returnObj = nodeObjReturner(tagName, content)
 
-            this.$emit("toParent", returnObj)
-
+            this.$emit("return-node", returnObj)
+            
             textfield.blur()
             textfield.innerText = ""
         }

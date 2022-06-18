@@ -17,16 +17,12 @@
         >
             <floor-block
                 v-if="item.NT == 'floor'"
-                :isTouchMode="isTouchMode"
                 :children="item.CTS"
-                :selected="item.SL"
                 :level="level + 1"
                 :location="location.concat([index])"
-                @mouse-in-child="onMouseLeave"
             />
             <node-renderer
                 v-else
-                :isTouchMode="isTouchMode"
                 :nodeObj="item"
                 :index="index"
                 :level="level"
@@ -47,18 +43,23 @@
 <script>
 import NodeRenderer from "./nodeRenderer"
 import BlockControls from "./blockControls"
-import blockHoverEvent from "../mixin/blockHoverEvent"
+import blockHoverEvent from "../mixin/blockHoverEvent.js"
 
 export default {
     name: "floor-block",
     components: {
         BlockControls, NodeRenderer
     },
+    data() {
+        return {
+            selected: false,
+        }
+    },
     props: [
-        "isTouchMode",
         "level", "location",
-        "children", "selected"
+        "children",
     ],
+    inject: ["isTouchMode"],
     mixins: [blockHoverEvent]
 }
 </script>

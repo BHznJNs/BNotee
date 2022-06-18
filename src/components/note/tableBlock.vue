@@ -29,22 +29,42 @@
             :selected="selected"
             :location="location"
             :parentType="'table'"
-        />
+        >
+            <!-- 表格设置 -->
+            <div
+                class="btn btn-normal tool-btn-in-block"
+                @click="openTableSetter"
+            >
+                <i class="material-icons">grid_on</i>
+            </div>
+        </block-controls>
     </div>
 </template>
 <script>
+import EventBus from "../../common/EventBus"
 import TableRow from "./tableRow"
 import BlockControls from "./blockControls"
-import blockHoverEvent from "../mixin/blockHoverEvent"
+import blockHoverEvent from "../mixin/blockHoverEvent.js"
 
 export default {
+    data() {
+        return {
+            selected: false,
+        }
+    },
     props: [
-        "isTouchMode", "selected",
-        "children", "location"
+        "children", "location",
     ],
+    inject: ["isTouchMode"],
     mixins: [blockHoverEvent],
     components: {
         TableRow, BlockControls
+    },
+    methods: {
+        openTableSetter() {
+            EventBus.emit("fixedComponents-open", "tableSetter")
+            EventBus.emit("table-location", this.location)
+        }
     }
 }
 </script>

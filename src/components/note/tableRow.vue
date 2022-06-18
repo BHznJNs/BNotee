@@ -2,7 +2,7 @@
     <tr>
         <td v-for="(content, index) in children"
             :key="content.id"
-            @click="edit($event)"
+            @click="edit" @contextmenu="edit"
             @blur="finishEdit($event, index)"
             contenteditable="true"
         >{{ content }}</td>

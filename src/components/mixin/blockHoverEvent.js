@@ -1,4 +1,3 @@
-<script>
 export default {
     data() {
         return {
@@ -13,11 +12,6 @@ export default {
             this.setTimeout = setTimeout(() => {
                 this.hover = true
             }, 400)
-            // 如果是节点子元素
-            if (this.location.length > 1) {
-                // 让父亲节点退出 hover 状态
-                this.$emit("mouse-in-child")
-            }
         },
         // 鼠标离开
         onMouseLeave() {
@@ -29,4 +23,3 @@ export default {
         }
     }
 }
-</script>

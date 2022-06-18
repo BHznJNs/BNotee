@@ -1,41 +1,10 @@
-<template>
-    <heading
-        v-if="nodeObj.NT == 'h'"
-        :level="level"
-        :content="nodeObj.CT"
-        :color="nodeObj.CL"
-        :selected="nodeObj.SL"
-        :location="location.concat([index])"
-    />
-    <list-block
-        v-else-if="nodeObj.NT == 'list'"
-        :isTouchMode="isTouchMode"
-        :isOrdered="nodeObj.OL"
-        :selected="nodeObj.SL"
-        :children="nodeObj.CTS"
-        :location="location.concat([index])"
-    />
-    <table-block
-        v-else-if="nodeObj.NT == 'table'"
-        :isTouchMode="isTouchMode"
-        :selected="nodeObj.SL"
-        :children="nodeObj.CTS"
-        :location="location.concat([index])"
-    />
-    <basic-node
-        v-else
-        :tagName="nodeObj.NT"
-        :content="nodeObj.CT"
-        :color="nodeObj.CL"
-        :selected="nodeObj.SL"
-        :location="location.concat([index])"
-    />
-</template>
 <script>
+import { h } from "vue"
 import Heading from "./heading"
 import BasicNode from "./basicNode"
 import ListBlock from "./listBlock"
 import TableBlock from "./tableBlock"
+import DetailBlock from "./detailBlock"
 
 export default {
     components: {
@@ -43,9 +12,45 @@ export default {
         ListBlock, TableBlock
     },
     props: [
-        "isTouchMode",
         "nodeObj", "index",
         "location", "level"
-    ]
+    ],
+    render() {
+        let nodeProps = {
+            location: this.location.concat([this.index]),
+        }
+        let nodeType
+        switch (this.nodeObj.NT) {
+            case "h":
+                nodeType = Heading
+                nodeProps.level = this.level
+                nodeProps.content = this.nodeObj.CT
+                nodeProps.color = this.nodeObj.CL
+                break
+            case "list":
+                nodeType = ListBlock
+                nodeProps.isOrdered= this.nodeObj.OL
+                nodeProps.children= this.nodeObj.CTS
+                break
+            case "table":
+                nodeType = TableBlock
+                nodeProps.children= this.nodeObj.CTS
+                break
+            case "details":
+                nodeType = DetailBlock
+                nodeProps.summary = this.nodeObj.SUM
+                nodeProps.children = this.nodeObj.CTS
+                break
+            default:
+                nodeType = BasicNode
+                nodeProps.tagName = this.nodeObj.NT
+                nodeProps.content = this.nodeObj.CT
+                nodeProps.color = this.nodeObj.CL
+        }
+        return h(
+            nodeType,
+            nodeProps
+        )
+    }
 }
 </script>

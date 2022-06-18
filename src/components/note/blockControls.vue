@@ -7,11 +7,12 @@
         }"
     >
         <div
-            class="btn btn-normal adder-btn"
+            class="btn btn-normal tool-btn-in-block"
             @click="addNode"
         >
             <i class="material-icons">add</i>
         </div>
+        <slot></slot>
         <label class="checkbox">
             <input
                 type="checkbox"
@@ -19,87 +20,67 @@
                 :checked="selected"
                 @change="selectEvent"
             />
-            <i class="checkbox-icon"></i>
+            <i
+                class="checkbox-icon"
+                @touchstart="_touchstart"
+                @touchend="_touchend"
+            ></i>
         </label>
     </div>
 </template>
 
 <script>
 import getNodeObj from "../mixin/getNodeObj"
-import EventBus from "../../common/EventBus"
+import blockControlsAdder from "./blockControlsAdder"
 
 export default {
+    data() {
+        return {
+            timeout: null,
+        }
+    },
     props: [
-        "isTouchMode",
-        "disabled", "selected",
-        "location", "parentType"
+        "isTouchMode", "parentType",
+        "disabled", "location", "selected",
     ],
     inject: ["selectedNode"],
-    mixins: [getNodeObj],
+    mixins: [getNodeObj, blockControlsAdder],
     methods: {
+        _touchstart() {
+            this.timeout = setTimeout(() => {
+                this.addNode()
+            }, 1000)
+        },
+        _touchend() {
+            clearTimeout(this.timeout)
+        },
         selectEvent() {
             // 返回对象是否 checked
             const checked = this.$refs.checkbox.checked
-            this.getThisObj.SL = checked
+            this.$parent.selected = checked
 
             // 若被选择
             if (checked) {
-                EventBus.on("add-node", () => {
-                    const selectedNodeLoc = JSON.stringify(this.selectedNode.location)
-                    const thisNodeLoc = JSON.stringify(this.location)
-                    if (selectedNodeLoc == thisNodeLoc) {
-                        this.addNode()
-                    }
-                })
-                EventBus.on("remove-add-node", () => {
-                    EventBus.off("add-node")
-                    EventBus.off("remove-add-node")
-                })
-                
                 // 如果已有节点被选择
-                if (this.selectedNode.location) {
+                if (this.selectedNode.loc) {
                     // 选取已被选择节点并取消选择
-                    this.getNodeObj({
-                        location: this.selectedNode.location,
-                        callback: (nodeArray, index) => {
-                            nodeArray[index].SL = false
-                            EventBus.emit()
-                        }
-                    })
+                    this.selectedNode.vnode.selected = false
                 }
 
-                this.selectedNode.location = this.location
+                this.selectedNode.loc = this.location
+                this.selectedNode.vnode = this.$parent
                 this.selectedNode.type = this.parentType
-            } else { // 若取消选择
-                EventBus.emit("remove-add-node")
-                this.selectedNode.location = null
-                this.selectedNode.type = null
-            }
-        },
-        // 方法：打开全局输入组
-        addNode() {
-            if (this.parentType == "table") {
-                // 获取当前表格列数
-                const colNum = this.getThisObj.CTS[0].length
-                // 新行
-                let newRow = []
-                for (let i = 0; i < colNum; i++) {
-                    newRow.push("")
+                // 若父组件为列表
+                if (this.parentType == "list") {
+                    this.selectedNode.type =
+                        (this.$parent.isNested) ?
+                            "nestedList" :
+                            "notNestedList"
                 }
-                // 插入新行
-                this.getThisObj.CTS.push(newRow)
-            } else {
-                EventBus.emit("note-offset")
-                EventBus.emit("textfield-open", this.parentType)
-                // 添加事件监听
-                EventBus.on("textfield-return-" + this.parentType, (obj) => {
-                    // 向父元素添加节点
-                    if (obj) {
-                        this.getThisObj.CTS.push(obj)
-                    }
-                    // 移除事件监听
-                    EventBus.off("textfield-return-" + this.parentType)
-                })
+            } else { // 若取消选择
+                this.selectedNode.loc = null
+                this.selectedNode.vnode = null
+                this.selectedNode.type = null
             }
         }
     }
@@ -107,15 +88,6 @@ export default {
 </script>
 
 <style scoped>
-    /* Adder Button */
-    .adder-btn {
-        width: 10%;
-        min-width: 60px;
-        height: 32px;
-        line-height: 32px;
-        margin: 0 2rem 0;
-        background-color: #CFD8DC;
-    }
     /* Controls */
     .controls {
         display: flex;
@@ -126,19 +98,18 @@ export default {
     }
     .controls.disabled {
         height: 0 !important;
+        margin: 0;
     }
-    .controls.disabled * {
-        opacity: 0;
-        pointer-events: none;
-    }
-
+    
     /* Touch Mode */
     .touch-mode {
         position: absolute;
         top: 0;
         left: -44px;
     }
-    .touch-mode .adder-btn {
+</style>
+<style>
+    .controls.disabled * {
         display: none;
     }
 </style>

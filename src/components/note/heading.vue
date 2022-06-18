@@ -1,6 +1,7 @@
 <script>
 import { h } from "vue"
 import BasicNode from "./basicNode"
+import EventBus from "../../common/EventBus"
 
 export default {
     props: [
@@ -9,6 +10,11 @@ export default {
         "color"
     ],
     components: [BasicNode],
+    mounted() {
+        this.$nextTick(() => {
+            EventBus.emit("anchor-mounted")
+        })
+    },
     render() {
         let tagName
         if (this.level < 6) {
@@ -18,6 +24,8 @@ export default {
         }
         return h(BasicNode, {
             tagName: tagName,
+            id: this.location.join(""),
+            class: "heading",
             content: this.content,
             color: this.color,
             selected: this.selected,
