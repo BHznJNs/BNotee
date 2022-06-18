@@ -90,6 +90,7 @@ export default {
 <style>
     #app {
         background-color: #F5F5F5;
+        overflow: hidden;
     }
 
     .dark-filter {
