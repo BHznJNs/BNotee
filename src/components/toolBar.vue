@@ -1,6 +1,21 @@
 <template>
     <div class="toolbar shadow-3">
-        <i class="logo material-icons shadow-2">format_list_bulleted</i> 
+        <info :disabled="!isInfoWindowShow"/>
+        <div class="logo shadow-2">
+            <div
+                class="info-outer"
+                @click="isInfoWindowShow = true"
+                :class="{ disabled: !isInfoIconShow }"
+            >
+                <i class="material-icons">info_outline</i>
+            </div>
+            <div
+                class="logo-outer"
+                @click="logoClick"
+            >
+                <i class="material-icons">format_list_bulleted</i>
+            </div>
+        </div>
         <div class="tools">
             <!-- 插入节点 -->
             <div
@@ -30,7 +45,7 @@
             <!-- 节点颜色修改 -->
             <div
                 class="tool btn btn-shallow"
-                :class="{ 'disabled': !['basic-node', 'list-item'].includes(selectedNode.type) }"
+                :class="{ 'disabled': !['h1', 'h2', 'h3', 'h4', 'p', 'li'].includes(selectedNode.type) }"
                 @click="openColors"
             >
                 <i class="material-icons">color_lens</i>
@@ -63,6 +78,7 @@
 </template>
 
 <script>
+import Info from "./info.vue"
 import getNodeObj from "./mixin/getNodeObj"
 import insertNode from "./mixin/insertNode.js"
 import deleteNode from "./mixin/deleteNode.js"
@@ -71,8 +87,15 @@ import compiler from "../common/compiler"
 import saveAs from "file-saver"
 
 export default {
+    data() {
+        return {
+            isInfoIconShow: false,
+            isInfoWindowShow: false,
+        }
+    },
     props: ["isTouchMode"],
     inject: ["note", "selectedNode"],
+    components: { Info },
     mixins: [getNodeObj, insertNode, deleteNode],
     mounted() {
         const fileUploader = this.$refs.fileUploader
@@ -85,9 +108,9 @@ export default {
             reader.onload = (e) => {
                 let result = e.target.result
                 this.note.CTS = JSON.parse(result)
-                setTimeout(() => {
+                this.$nextTick(() => {
                     compiler.init()
-                }, 2000)
+                })
             }
         })
 
@@ -97,6 +120,13 @@ export default {
         })
     },
     methods: {
+        // 点击 logo 后一段时间显示 Info 图标
+        logoClick() {
+            this.isInfoIconShow = true
+            setTimeout(() => {
+                this.isInfoIconShow = false
+            }, 3000)
+        },
         // 方法：打开全局输入组
         openTextfield() {
             EventBus.emit("textfield-open", "toolBar")
@@ -170,17 +200,36 @@ export default {
                 box-sizing: border-box;
     }
 
-    i.logo {
-        display: block;
+    /* Logo */
+    .logo {
         width: 100%;
+        height: 48px;
         padding: 8px 0;
         margin-bottom: 8px;
         color: white;
         background-color: #333;
-        font-size: 48px;
         text-align: center;
     }
+    .logo i {
+        display: block;
+        font-size: 48px;
+        cursor: pointer;
+    }
+    .logo > .info-outer {
+        max-height: 48px;
+        overflow: hidden;
+        transition: .3s;
+    }
+    .logo .info-outer.disabled {
+        max-height: 0;
+        margin-top: -8px;
+    }
+    .logo .logo-outer {
+        margin-top: 8px;
+    }
+    /* Logo End */
 
+    /* Tools */
     .tools {
         display: flex;
         flex-direction: column;
@@ -196,6 +245,8 @@ export default {
     .tool {
         margin: .6rem auto;
     }
+    /* Tools End */
+
     /* File Uploader */
     i.file input {
         display: none;

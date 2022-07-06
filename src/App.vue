@@ -25,14 +25,12 @@
 
 <script>
 import { computed } from "vue"
-
 import ToolBar from "./components/toolBar"
 import Note from "./components/note"
 import Anchors from "./components/drawers/anchors"
 import ControlBalls from "./components/fixed/controlBalls"
 import FixedComponents from "./components/fixed/fixedComponents"
 import Msgbar from "./components/fixed/msgbar"
-
 import defaultContent from "./common/defaultContent"
 
 export default {

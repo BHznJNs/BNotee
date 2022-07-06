@@ -7,6 +7,7 @@
     CL --> Color
     OL --> isOrdered
     SUM --> Summary
+    LG --> Language
 */
 export default {
     NM: "Example",
@@ -113,6 +114,11 @@ export default {
                     CL: "#333",
                 }
             ]
+        },
+        {
+            NT: "code",
+            LG: "javascript",
+            CT: "console.log('Hello World')\nalert('Hello World')",
         }
 
     ]

@@ -71,11 +71,12 @@ export default {
     },
     watch: {
         colorValue(newValue) {
+            // 节流
             clearTimeout(this.timeout)
-            const color = newValue.replace("#", "")
+            this.colorValue = newValue.replace("#", "")
 
             this.timeout = setTimeout(() => {
-                this.setColor("#" + color)
+                this.setColor("#" + this.colorValue)
             }, 300)
         }
     }

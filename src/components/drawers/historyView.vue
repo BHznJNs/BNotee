@@ -24,7 +24,7 @@
         
         <div
             class="btn btn-shallow"
-            @click="doSome($event)"
+            @click="doSome"
         >
             <i class="material-icons" :data-index="index">check</i>
         </div>
@@ -85,7 +85,7 @@ export default {
                 transition: background .3s;
     }
     .history-block.selected {
-        background-color: #F5F5F5;
+        background-color: #EEE;
     }
 
     /* History Block Content */

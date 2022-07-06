@@ -80,9 +80,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-    .fullscreen-mask {
-        cursor: pointer;
-    }
-</style>

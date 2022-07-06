@@ -55,20 +55,20 @@ export default {
     },
     components: { Drawer, HistoryView },
     props: ["disabled"],
-    inject: ["note"],
+    inject: ["note", "selectedNode"],
     mixins: [getNodeObj, insertNode, deleteNode],
     methods: {
         // 方法：撤销 || 恢复
         doit(type) {
             // 取历史修改索引
-            const index = type == "undo" ?
-                     ++this.historyIndex :
-                     this.historyIndex--
+            const index = (type == "undo") ?
+                       ++this.historyIndex :
+                       this.historyIndex--
             // 取历史修改对象
             let historyObj = this.note.HT[index]
             // undo -> before || redo -> after
-            const resultValue = type == "undo" ?
-                            "before" : "after"
+            const resultValue = (type == "undo") ?
+                                "before" : "after"
 
             switch (historyObj.prop) {
                 case "CT":
@@ -92,11 +92,11 @@ export default {
                     const loc = historyObj.loc
                     const nodeObj = this.deleteNode(loc)
 
-                    this.note.HT.shift()
+                    // console.log(this.note.HT.shift())
                     historyObj.prop = "DEL"
                     historyObj.loc[historyObj.loc.length - 1] -= 1
                     historyObj.nodeObj = nodeObj
-                    this.note.HT.unshift(historyObj)
+                    // this.note.HT.unshift(historyObj)
                     break
                 }
                 case "DEL": {
@@ -104,10 +104,10 @@ export default {
                     const loc = historyObj.loc
                     this.insertNode(nodeObj, loc)
 
-                    this.note.HT.shift()
+                    // this.note.HT.shift()
                     historyObj.prop = "IST"
                     historyObj.loc[historyObj.loc.length - 1] += 1
-                    this.note.HT.unshift(historyObj)
+                    // this.note.HT.unshift(historyObj)
                     break
                 }
             }
@@ -116,7 +116,6 @@ export default {
         doSome(index) {
             const diff = index - this.historyIndex
             const diffAbs = Math.abs(diff)
-
             let type
             if (diff > 0) {
                 // 若需撤销
@@ -126,7 +125,6 @@ export default {
             } else {
                 return
             }
-
             for (let i = 0; i < diffAbs; i++) {
                 this.doit(type)
             }

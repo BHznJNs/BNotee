@@ -32,7 +32,10 @@
             <!-- 新增节点 按键 -->
             <div
                 class="btn-fab adder-btn"
-                :class="{ 'disabled': isNodeAdding }"
+                :class="{
+                    'disabled': isNodeAdding,
+                    'fullscreen': isFullscreen,
+                }"
                 @click="openNodeAdder"
             >
                 <i class="material-icons">add</i>
@@ -82,7 +85,9 @@ export default {
         openNodeAdder() {
             location.href = "#note-textfield-group"
             this.isNodeAdding = true
-            this.$refs.textfield.focus()
+            this.$nextTick(() => {
+                this.$refs.textfield.focus()
+            })
         },
         // 方法：关闭插入文本框
         closeNodeAdder(obj) {
@@ -173,22 +178,11 @@ export default {
         color: white !important;
         background-color: #546E7A;
     }
+    .adder-btn.fullscreen {
+        margin-bottom: 60px;
+    }
     .adder-btn.disabled {
         opacity: 0;
-        pointer-events: none;
-    }
-
-    /* Mask */
-    .mask-outer {
-        position: relative;
-        width: 100%;
-        height: 0;
-        z-index: 1;
-    }
-    .mask {
-        width: 100%;
-        height: .6rem;
-        background-image: linear-gradient(to top, rgba(255, 255, 255, 0), white);
         pointer-events: none;
     }
 </style>

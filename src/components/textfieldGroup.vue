@@ -10,6 +10,7 @@
             <option value="floor">层次</option>
             <option value="ol">序列</option>
             <option value="ul">乱列</option>
+            <option value="code">代码</option>
             <option value="table">表格</option>
             <option value="details">详情</option>
         </select>
@@ -17,6 +18,7 @@
             class="textfield"
             contenteditable="true"
             ref="inputter"
+            @keydown.enter.prevent="enter"
         ></div>
         <div
             class="textfield-closer closer"
@@ -37,6 +39,9 @@ export default {
         focus() {
             const textfield = this.$refs.inputter
             textfield.focus()
+        },
+        enter() {
+            this.closeNodeAdder()
         },
         // 方法：关闭文本框，并将值返回给父节点
         closeNodeAdder() {

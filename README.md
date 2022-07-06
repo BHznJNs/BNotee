@@ -1,6 +1,6 @@
 # BNotee
 
-一个运行在浏览器上的笔记程序 [GitHubPages](https://bhznjns.github.io/BNotee/dist/)
+一个运行在浏览器上的笔记程序。 [GitHubPages](https://bhznjns.github.io/BNotee/dist/)
 
 * * *
 

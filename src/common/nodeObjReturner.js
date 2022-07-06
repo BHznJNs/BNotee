@@ -43,6 +43,10 @@ export default (tagName, content) => {
             }]
             obj.OL = false
             break
+        case "code":
+            obj.LG = content
+            obj.CT = ""
+            break
         case "table":
             obj.CTS = [
                 [content, "", "", ""],

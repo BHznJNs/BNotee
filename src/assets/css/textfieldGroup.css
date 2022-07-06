@@ -60,6 +60,7 @@
     line-height: 20px;
     padding: 6px 4px;
     border-bottom: solid 2px #bdbdbd;
+    font-family: sans-serif;
     cursor: pointer;
     transition: .3s;
 }
