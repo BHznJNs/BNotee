@@ -15,11 +15,11 @@
         </div>
         <div v-show="item.before">
             <span class="history-prop">改前：</span>
-            <span class="text">{{ item.before }}</span>
+            <span class="text" :title="item.before">{{ item.before }}</span>
         </div>
         <div v-show="item.after">
             <span class="history-prop">改后：</span>
-            <span class="text">{{ item.after }}</span>
+            <span class="text" :title="item.after">{{ item.after }}</span>
         </div>
         
         <div

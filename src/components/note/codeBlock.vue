@@ -28,7 +28,7 @@ export default {
     components: {
         highlightjs: hljsVuePlugin.component
     },
-    mixins: [getNodeObj, nodeSelectEvent],
+    mixins: [getNodeObj, nodeSelectEvent, codeInput],
     inject: ["selectedNode"],
     props: ["language", "code", "location"],
     watch: {
@@ -65,24 +65,30 @@ export default {
     mounted() {
         this.codeNode = this.$el.querySelector("code")
         this.codeNode.contentEditable = true
-        this.codeNode.addEventListener("keydown", codeInput)
+        this.codeNode.addEventListener("keydown", this.codeInput)
+        // 防止直接显示 html 实体
+        this.$nextTick(() => {
+            this.codeNode.innerHTML = this.code
+            hljs.highlightElement(this.codeNode)
+        })
     }
 }
 </script>
 
 <style>
-pre {
-    outline: none;
-}
-pre code.hljs {
-    outline: none;
-    border-radius: 8px;
-    transition: box-shadow .4s, background-color .2s;
-}
-pre code.hljs.selected {
-    box-shadow: var(--shadow-4);
-}
-pre code.hljs:focus {
-    background-color: rgba(0, 0, 0, 0.09)
-}
+    pre {
+        outline: none;
+    }
+    pre code.hljs {
+        font-size: 18px;
+        outline: none;
+        border-radius: 8px;
+        transition: box-shadow .4s, background-color .2s;
+    }
+    pre code.hljs.selected {
+        box-shadow: var(--shadow-4);
+    }
+    pre code.hljs:focus {
+        background-color: rgba(0, 0, 0, 0.09)
+    }
 </style>

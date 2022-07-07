@@ -57,7 +57,7 @@ export default {
                     CTS.push(obj)
                 }
                 // 添加历史对象
-                const loc = this.location
+                const loc = Array.from(this.location)
                 loc.push(CTS.length - 1)
                 EventBus.emit("add-history", {
                     loc,

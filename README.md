@@ -13,8 +13,7 @@
 | \__Underlined\__ | <u>\__Underlined\__</u>
 | //Italic// | <i>//Italic//</i> |
 | --Deleted-- | <del>--Deleted--</del> |
-| ::Weaken:: | <span>Weaken</span> |
-
+| ::Weaken:: | <span style="opacity: .75">Weaken</span> |
 
 * * *
 
@@ -31,8 +30,9 @@
 - 全屏(阅读模式 Read Mode)
 - 行内样式(Inline Style)
 - 导入 / 导出(Import / Export)
+- 代码块(Code Block)
 
 ## TODO
 
-- [ ] 代码块(Code Block for: [Python, JavaScript, C])
 - [ ] .md 导出(Markdown exports)
+- [ ] .html 导出(HTML exports)

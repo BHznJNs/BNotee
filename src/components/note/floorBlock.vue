@@ -17,16 +17,13 @@
         >
             <floor-block
                 v-if="item.NT == 'floor'"
-                :children="item.CTS"
-                :level="level + 1"
+                :children="item.CTS" :level="level + 1"
                 :location="location.concat([index])"
             />
             <node-renderer
                 v-else
-                :nodeObj="item"
-                :index="index"
-                :level="level"
-                :location="location"
+                :nodeObj="item" :level="level"
+                :location="location.concat([index])"
             />
         </template>
 
@@ -60,6 +57,6 @@ export default {
         "children",
     ],
     inject: ["isTouchMode"],
-    mixins: [blockHoverEvent]
+    mixins: [blockHoverEvent],
 }
 </script>

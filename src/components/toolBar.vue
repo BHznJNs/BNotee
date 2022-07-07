@@ -83,7 +83,6 @@ import getNodeObj from "./mixin/getNodeObj"
 import insertNode from "./mixin/insertNode.js"
 import deleteNode from "./mixin/deleteNode.js"
 import EventBus from "../common/EventBus"
-import compiler from "../common/compiler"
 import saveAs from "file-saver"
 
 export default {
@@ -108,9 +107,7 @@ export default {
             reader.onload = (e) => {
                 let result = e.target.result
                 this.note.CTS = JSON.parse(result)
-                this.$nextTick(() => {
-                    compiler.init()
-                })
+                EventBus.emit("note-loaded")
             }
         })
 
@@ -133,7 +130,7 @@ export default {
         },
         // 插入节点前
         toInsertNode(nodeObj) {
-            const loc = this.selectedNode.loc
+            const loc = Array.from(this.selectedNode.loc)
             this.insertNode(nodeObj, loc)
             // 加入历史编辑
             loc[loc.length - 1] += 1 // 数组最后一个元素值 + 1

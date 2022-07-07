@@ -6,8 +6,7 @@ import EventBus from "../../common/EventBus"
 export default {
     props: [
         "level", "content",
-        "location", "selected",
-        "color"
+        "location", "color",
     ],
     components: [BasicNode],
     mounted() {
@@ -28,8 +27,7 @@ export default {
             class: "heading",
             content: this.content,
             color: this.color,
-            selected: this.selected,
-            location: this.location
+            location: this.location,
         })
     }
 }

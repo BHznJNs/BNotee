@@ -28,9 +28,9 @@
         </select>
 
         <div
-            class="textfield"
+            class="textfield" ref="inputer"
             contenteditable="true"
-            ref="inputter"
+            @keydown.enter="onEnter"
         ></div>
         <div
             class="textfield-closer closer"
@@ -65,12 +65,16 @@ export default {
     mounted() {
         EventBus.on("textfield-open", (from) => {
             this.commandFrom = from
-            setTimeout(() => {
-                this.$refs.inputter.focus()
-            }, 1200)
         })
     },
     methods: {
+        // 同时按下 alt 和 enter 时
+        onEnter(e) {
+            if (e.altKey) {
+                e.preventDefault()
+                this.closeTextfield()
+            }
+        },
         // 方法：关闭文本框，并将值返回给父节点
         closeTextfield() {
             this.$emit("close", "textfieldGroup")
@@ -78,14 +82,14 @@ export default {
             const tagName = !this.isFromNestedList ?
                             this.$refs.selector.value :
                             this.$refs.selector4List.value
-            const content = this.$refs.inputter.innerText
+            const content = this.$refs.inputer.innerText
             // 定义返回对象
             const returnObj = nodeObjReturner(tagName, content)
             // 传值
             EventBus.emit("textfield-return-" + this.commandFrom, returnObj)
 
-            this.$refs.inputter.blur()
-            this.$refs.inputter.innerText = ""
+            this.$refs.inputer.blur()
+            this.$refs.inputer.innerText = ""
         }
     }
 }

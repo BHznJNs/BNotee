@@ -22,9 +22,7 @@ export default {
         // 获取 节点所在数组 并执行回调函数
         getNodeObj({
             parentObj=this.note,
-            location,
-            num=0,
-            callback
+            location, num=0, callback
         }) {
             if (num == location.length - 1) {
                 // 调用回调函数返回 节点所在数组 及 index

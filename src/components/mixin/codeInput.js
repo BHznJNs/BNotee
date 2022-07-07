@@ -22,10 +22,17 @@ function tabInput(e) {
     insertText("    ")
 }
 
-const bracketsDist = {
-    ")": "(", "]": "[",
-    "}": "{", ">": "<",
-}
+const bracketsDist = new Map([
+    [")", "("],
+    ["]", "["],
+    ["}", "{"],
+    [">", "<"],
+])
+const xmlLang = [
+    "html", "xml",
+    "xhtml", "svg",
+    "rss",
+]
 /**
  * @description input types of pair of signals
  * @param {string} type ")" | "]" | "}"
@@ -34,7 +41,7 @@ const bracketsDist = {
 function pairInput(type, autoEnter) {
     setTimeout(() => {
         if (autoEnter) {
-            insertText(`${bracketsDist[type]}
+            insertText(`${bracketsDist.get(type)}
     `)
             insertText(`
 ${type}`, "start")
@@ -44,39 +51,42 @@ ${type}`, "start")
     }, 150)
 }
 
-function codeInput(e) {
-    console.log(e.keyCode)
-    switch (e.keyCode) {
-        case 9: 
-            tabInput(e)
-            break
-        case 57:
-            if (e.shiftKey) {
-                pairInput(")", e.altKey)
+export default {
+    methods: {
+        codeInput(e) {
+            switch (e.keyCode) {
+                case 9:
+                    tabInput(e)
+                    break
+                case 57:
+                    if (e.shiftKey) {
+                        pairInput(")", e.altKey)
+                    }
+                    break
+                case 219:
+                    if (e.shiftKey) {
+                        pairInput("}", e.altKey)
+                    } else {
+                        pairInput("]", e.altKey)
+                    }
+                    break
+                case 188:
+                    // 若是 xml 语言
+                    if (xmlLang.includes(this.language)) {
+                        pairInput(">")
+                    }
+                    break
+                case 222:
+                    if (e.shiftKey) {
+                        pairInput(`"`)
+                    } else {
+                        pairInput(`'`)
+                    }
+                    break
+                case 192:
+                    pairInput("`", e.altKey)
+                    break
             }
-            break
-        case 219:
-            if (e.shiftKey) {
-                pairInput("}", e.altKey)
-            } else {
-                pairInput("]", e.altKey)
-            }
-            break
-        case 188:
-            if (e.shiftKey) {
-                pairInput(">")
-            }
-            break
-        case 222:
-            if (e.shiftKey) {
-                pairInput(`"`)
-            } else {
-                pairInput(`'`)
-            }
-            break
-        case 192:
-            pairInput("`", e.altKey)
-            break
+        }
     }
 }
-export default codeInput

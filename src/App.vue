@@ -21,6 +21,8 @@
     <fixed-components/>
 
     <anchors/>
+
+    <!-- <window @close="windowDisabled = true" :width="'800px'" :height="'480px'" :disabled="windowDisabled"><h1>This is a window</h1></window> -->
 </template>
 
 <script>
@@ -36,13 +38,14 @@ import defaultContent from "./common/defaultContent"
 export default {
     name: "App",
     components: {
-        Anchors, Note,
+        Anchors, Msgbar,
+        Note, ToolBar,
         ControlBalls,
-        ToolBar, Msgbar,
-        FixedComponents
+        FixedComponents,
     },
     data() {
         return {
+            windowDisabled: false,
             note: defaultContent,
             selectedNode: {
                 loc: null,
@@ -63,13 +66,13 @@ export default {
         }
     },
     mounted() {
-        (() => {
+        this.$nextTick(() => {
             // 移动端 防止 软键盘弹起导致 vh 改变
             const initViewportHeight = () => {
                 const meta = document.querySelector("#meta-viewport")
-                let height = 1080
+                let height
                 if (window) {
-                    height = window.innerHeight
+                    height = window.outerHeight
                 }
                 const content = `width=device-width,height=${height},initial-scale=1.0`
                 meta.setAttribute("content", content)
@@ -80,7 +83,7 @@ export default {
             addEventListener("orientationchange", () => {
                 initViewportHeight()
             })
-        })()
+        })
     }
 }
 </script>

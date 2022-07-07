@@ -9,12 +9,12 @@ import CodeBlock from "./codeBlock.vue"
 
 export default {
     props: [
-        "nodeObj", "index",
-        "location", "level"
+        "nodeObj", "level",
+        "location",
     ],
     render() {
         let nodeProps = {
-            location: this.location.concat([this.index]),
+            location: this.location
         }
         let nodeType
         switch (this.nodeObj.NT) {

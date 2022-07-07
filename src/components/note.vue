@@ -15,11 +15,9 @@
                     :location="[index]"
                 />
                 <node-renderer
-                    v-else
+                    v-else :level="1"
                     :nodeObj="item"
-                    :index="index"
-                    :level="1"
-                    :location="[]"
+                    :location="[index]"
                 />
             </template>
 
@@ -78,6 +76,11 @@ export default {
     mounted() {
         this.$nextTick(() => {
             compiler.init()
+        })
+        EventBus.on("note-loaded", () => {
+            this.$nextTick(() => {
+                compiler.init()
+            })
         })
     },
     methods: {
