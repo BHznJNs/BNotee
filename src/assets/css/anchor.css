@@ -50,3 +50,6 @@ a[level="H3"] {
 a[level="H4"] {
     margin-left: 80px;
 }
+a[level="H5"] {
+    margin-left: 100px;
+}
