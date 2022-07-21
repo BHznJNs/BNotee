@@ -2,7 +2,6 @@
 import { h } from "vue"
 import getNodeObj from "../mixin/getNodeObj"
 import selectEvent from "../mixin/nodeSelectEvent"
-import compiler from "../../common/compiler"
 import EventBus from "../../common/EventBus"
 
 export default {
@@ -11,7 +10,7 @@ export default {
             selected: false,
             initialContent: "",
             editing: false,
-            dbTouch: false,
+            dbRightClick: false,
         }
     },
     inject: ["selectedNode"],
@@ -19,18 +18,13 @@ export default {
     props: [
         "tagName", "content",
         "location", "color",
+        "href"
     ],
-    watch: {
-        content(newVal) {
-            this.$nextTick(() => {
-                const HTMLOutput = compiler.outputer(newVal)
-                this.$el.innerHTML = HTMLOutput
-            })
-        }
-    },
     render() {
         return h(this.tagName, {
             contentEditable: true,
+            href: this.href,
+            target: "_blank",
             class: {
                 "selected": this.selected,
                 "editing": this.editing,
@@ -39,27 +33,25 @@ export default {
             style: {
                 "color": this.color
             },
+            onClick: (e) => {
+                e.preventDefault()
+                window.open(this.href)
+                this.$el.blur()
+            },
             onContextmenu: (e) => {
                 e.preventDefault()
-                if (!this.initialContent) {
-                    this.initialContent = e.target.innerText
-                }
-                this.selectEvent()
-            },
-            onTouchstart: () => {
-                // 双击选择
-                if (this.dbTouch) {
+                // 右键双击，选择节点
+                if (this.dbRightClick) {
                     this.selectEvent()
+                    return
                 }
-                this.dbTouch = true
+                this.dbRightClick = true
                 setTimeout(() => {
-                    this.dbTouch = false
+                    this.dbRightClick = false
                 }, 300)
-            },
-            onClick: () => {
-                // 储存修改前节点内容
+                // 右键单击，开始编辑
                 if (!this.editing) {
-                    this.initialContent = this.$el.innerText
+                    this.initialContent = e.target.innerText
                 }
                 this.editing = true
             },

@@ -62,7 +62,7 @@ h4 {
 h5 {
     font-size: 1.25rem;
 }
-@media sreen and (min-width: 1200px) {
+@media screen and (min-width: 1200px) {
     h1 {
         font-size: 2.5rem;
     }
