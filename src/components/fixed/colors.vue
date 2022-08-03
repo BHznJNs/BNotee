@@ -55,6 +55,11 @@ export default {
     inject: ["selectedNode"],
     mixins: [getNodeObj],
     methods: {
+        getColor() {
+            const nodeObj = this.selectedNode.obj
+            const color = nodeObj.CL
+            this.colorValue = color
+        },
         setColor(color) {
             const loc = this.selectedNode.loc
             const nodeObj = this.selectedNode.obj
@@ -78,6 +83,12 @@ export default {
             this.timeout = setTimeout(() => {
                 this.setColor("#" + this.colorValue)
             }, 300)
+        },
+        disabled(newValue) {
+            // 每次开启组件时调用
+            if (!newValue) {
+                this.getColor()
+            }
         }
     }
 }
