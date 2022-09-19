@@ -69,7 +69,7 @@ export default {
         display: inline;
     }
     .info p {
-        line-height: 1.25;
+        line-height: 1.5;
     }
 
     /* Closer */
