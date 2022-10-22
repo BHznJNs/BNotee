@@ -31,8 +31,8 @@
 - 行内样式(Inline Style)
 - 导入 / 导出(Import / Export)
 - 代码块(Code Block)
+- .md 导出(Markdown exports)
 
 ## TODO
 
-- [ ] .md 导出(Markdown exports)
 - [ ] .html 导出(HTML exports)
