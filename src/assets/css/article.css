@@ -295,6 +295,7 @@ summary {
     background-color: rgba(0, 0, 0, 0.06);
     padding: 0 6px;
     margin: 0 2px;
+    font-size: 16px;
     border-radius: 2px;
 }
 .note span {
