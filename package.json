@@ -1,6 +1,6 @@
 {
   "name": "BNotee",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -19,7 +19,7 @@
     "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
     "@vue/compiler-sfc": "^3.2.41",
-    "babel-eslint": "^10.1.0",
+    "@babel/eslint-parser": "^7.19.1",
     "eslint": "^8.23.1",
     "eslint-plugin-vue": "^9.5.1"
   },
@@ -33,7 +33,7 @@
       "eslint:recommended"
     ],
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@babel/eslint-parser"
     },
     "rules": {}
   },

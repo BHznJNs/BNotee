@@ -98,14 +98,13 @@ export default {
             const noteCTS = this.note.CTS
             if (obj) {
                 noteCTS.push(obj)
+                // 添加历史对象
+                const loc = [noteCTS.length - 1]
+                EventBus.emit("add-history", {
+                    loc,
+                    prop: "IST"
+                })
             }
-
-            // 添加历史对象
-            const loc = [noteCTS.length - 1]
-            EventBus.emit("add-history", {
-                loc,
-                prop: "IST"
-            })
         }
     },
     watch: {
